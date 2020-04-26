@@ -19,9 +19,7 @@ services:
     ports:
       - "8081:8000"
     volumes:
-      - ./dofacts:/app/dofacts
-      - ./tests:/app/tests
-      - ./data/media:/public/media
+      - ./:/app
     depends_on:
       - db
     env_file:
