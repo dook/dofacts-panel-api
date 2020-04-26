@@ -227,7 +227,5 @@ PANEL_DOMAIN_NAME = env("DOMAIN_NAME", default="panel.app.fakehunter.pap.pl")
 
 # TODO: Add subscribers autodiscovery
 EVENTS = {
-    "news_new_verdict": [
-        "dofacts.users.events.NewsNewVerdictSubscriber",
-    ]
+    "news_new_verdict": ["dofacts.users.events.NewsNewVerdictSubscriber"],
 }
