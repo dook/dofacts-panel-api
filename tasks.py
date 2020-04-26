@@ -31,3 +31,8 @@ def black(c):
 def reformat(c):
     isort(c)
     black(c)
+
+
+@task
+def lint(c):
+    c.run(f"flake8 --max-line-length {LINE_LENGTH} --extend-ignore=E203")
