@@ -89,7 +89,7 @@ class NewsDraftProcessor(ProcessorBase):
         transaction.on_commit(self.send_notifications_callback(checkers, news))
 
     def get_checkers(self):
-        return self.fact_checkers.active_verified().ordered_by_active_assignments()[
+        return self.fact_checkers.active_verified().ordered_by_active_assignments_randomized()[
             : settings.TARGET_ASSIGNMENTS_PER_NEWS_COUNT
         ]
 
@@ -160,7 +160,8 @@ class StaleNewsProcessor(ProcessorBase):
         )
         checkers = (
             self.fact_checkers.active_verified()
-            .ordered_by_active_assignments()
-            .exclude_assigned_to_news(news)[:missing]
+            .exclude_assigned_to_news(news)
+            .ordered_by_active_assignments_randomized()
+            [:missing]
         )
         return checkers

@@ -1,4 +1,5 @@
 import datetime
+from random import shuffle
 
 from django.conf import settings
 from django.contrib.auth.models import BaseUserManager
@@ -45,8 +46,11 @@ class UserQuerySet(models.QuerySet):
     def exclude_assigned_to_news(self, news):
         return self.exclude(usernews_set__news=news)
 
-    def ordered_by_active_assignments(self):
-        return self.with_active_assignments_count().order_by("active_assignments_count")
+    def ordered_by_active_assignments_randomized(self):
+        users = list(self.with_active_assignments_count())
+        shuffle(users)
+        users.sort(key=lambda u: u.active_assignments_count)
+        return users
 
 
 class UserManagerBase(BaseUserManager):
