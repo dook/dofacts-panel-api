@@ -1,7 +1,7 @@
 import factory
 from django.utils import timezone
 
-from dook.news.models import (
+from dofacts.news.models import (
     ExpertOpinion,
     FactCheckerOpinion,
     News,
@@ -9,7 +9,7 @@ from dook.news.models import (
     OpinionBase,
     SensitiveKeyword,
 )
-from dook.users.constants import UserRoleType
+from dofacts.users.constants import UserRoleType
 from tests.factories.users import UserFactory
 
 

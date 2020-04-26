@@ -1,10 +1,10 @@
 import pytest
-
 from assertpy import assert_that
-from dook.news.models import News
-from dook.processor.duplicates.aggregators import DummyAggregator
-from dook.processor.duplicates.finders import DummyDuplicatesFinder
-from dook.processor.processor import NewsDraftProcessor
+
+from dofacts.news.models import News
+from dofacts.processor.duplicates.aggregators import DummyAggregator
+from dofacts.processor.duplicates.finders import DummyDuplicatesFinder
+from dofacts.processor.processor import NewsDraftProcessor
 from tests.factories.news import KeywordFactory, NewsFactory
 from tests.factories.processor import NewsDraftFactory
 from tests.factories.users import UserFactory

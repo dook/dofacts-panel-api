@@ -1,7 +1,7 @@
 import pytest
 from pytest_django.lazy_django import skip_if_no_django
 
-from dook.users.models import User
+from dofacts.users.models import User
 
 
 @pytest.fixture()
