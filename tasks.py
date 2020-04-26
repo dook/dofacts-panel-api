@@ -1,9 +1,9 @@
 from invoke import task
 
-LINE_LENGTH = "90"
+LINE_LENGTH = "100"
 
 PATHS = ["dofacts", "tests"]
-EXCLUDE = ["*/migrations/*", "*/users/*"]
+EXCLUDE = ["*/migrations/*"]
 
 
 @task
