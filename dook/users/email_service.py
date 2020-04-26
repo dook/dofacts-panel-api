@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core.mail import EmailMessage, get_connection
 from django.template.loader import render_to_string
 
-from dook.sfnf_panel.settings import EMAIL_HOST_USER
+from dook.dofacts_panel.settings import EMAIL_HOST_USER
 
 
 def send_registration_confirm_email(url, user):

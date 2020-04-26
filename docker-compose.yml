@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   db:
-    container_name: sfnf-panel-db
+    container_name: dofacts-panel-db
     image: postgres:12.2
     ports:
       - "5434:5432"
@@ -11,7 +11,7 @@ services:
     env_file:
       - dook/.env
   api:
-    container_name: sfnf-panel-api
+    container_name: dofacts-panel-api
     build:
       context: .
       dockerfile: Dockerfile-dev

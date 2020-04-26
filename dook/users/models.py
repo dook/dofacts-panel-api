@@ -6,7 +6,7 @@ from django.db import models
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
-from dook.sfnf_panel import settings
+from dook.dofacts_panel import settings
 from dook.users.constants import (
     InvitationStatusType,
     InvitationUserRoleType,

@@ -1,5 +1,5 @@
 """
-ASGI config for sfnf_panel project.
+ASGI config for dofacts_panel project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dook.sfnf_panel.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dook.dofacts_panel.settings")
 
 application = get_asgi_application()

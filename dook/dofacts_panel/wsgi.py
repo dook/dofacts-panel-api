@@ -1,5 +1,5 @@
 """
-WSGI config for sfnf-panel project.
+WSGI config for dofacts-panel project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dook.sfnf_panel.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dook.dofacts_panel.settings")
 
 application = get_wsgi_application()
