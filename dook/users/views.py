@@ -115,7 +115,7 @@ class ActivateAccountView(APIView):
             pass
         else:
             raise InternalEmailErrorException
-        return Response("Adres email został potwierdzony.")
+        return Response("Your account has been confirmed.")
 
 
 class CreateInvitationView(generics.CreateAPIView):
@@ -152,7 +152,7 @@ class AcceptInviteView(APIView):
 
     def get(self, request, token):
         self.validate_invitation(token)
-        return Response("Prawidłowy token", status=status.HTTP_200_OK)
+        return Response("Invalid token.", status=status.HTTP_200_OK)
 
     def validate_invitation(self, token):
         invitation = Invitation.objects.filter(token=token).first()
@@ -190,7 +190,10 @@ class PasswordResetRequestView(generics.GenericAPIView):
             user = User.objects.filter(email=serializer.validated_data["email"]).first()
             self.send_email(user)
 
-        return Response("Sprawdź podany adres email.", status=status.HTTP_200_OK)
+        return Response(
+            "Check provided email address for further instructions.",
+            status=status.HTTP_200_OK,
+        )
 
     def send_email(self, user):
         reset_url = password_reset_token_generator.make_url(user)
@@ -209,7 +212,7 @@ class PasswordResetView(generics.GenericAPIView):
 
     def get(self, request, uidb64, token):
         password_reset_token_generator.validate_token(uidb64, token)
-        return Response("Prawidłowy token", status=status.HTTP_200_OK)
+        return Response("Invalid token.", status=status.HTTP_200_OK)
 
     def post(self, request, uidb64, token):
         password_reset_token_generator.validate_token(uidb64, token)
@@ -220,7 +223,9 @@ class PasswordResetView(generics.GenericAPIView):
         user = get_user_from_uid(uidb64)
         self.change_password(user, serializer.validated_data)
 
-        return Response("Hasło zostało ustawione.", status=status.HTTP_200_OK)
+        return Response(
+            "Your password has been reset successfully.", status=status.HTTP_200_OK
+        )
 
     def change_password(self, user, data):
         user.set_password(data["password"])
@@ -238,7 +243,9 @@ class InternalPasswordResetView(generics.GenericAPIView):
         user = request.user
         self.change_password(user, serializer.validated_data)
 
-        return Response("Hasło zostało ustawione.", status=status.HTTP_200_OK)
+        return Response(
+            "Your password has been reset successfully.", status=status.HTTP_200_OK
+        )
 
     def change_password(self, user, data):
         if user.check_password(data["old_password"]) is False:

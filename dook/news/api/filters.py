@@ -12,12 +12,12 @@ NEWS_CURRENT_VERDICT_CHOICES = (
 )
 
 NEWS_FINAL_VERDICT_TYPES = (
-    ("no_verdict", "BRAK WERDYKTU"),
-    ("true", "ZGŁOSZENIE PRAWDZIWE"),
-    ("false", "ZGŁOSZENIE FAŁSZYWE"),
-    ("spam", "SPAM"),
-    ("unidentified", "ZGŁOSZENIE NIEWERYFIKOWALNE"),
-    ("awaiting", "CZEKA NA WERDYKT EKSPERTA"),
+    ("no_verdict", "No verdict"),
+    ("true", "Verified True"),
+    ("false", "Verified False"),
+    ("spam", "Verified Spam"),
+    ("unidentified", "Cannot be verified"),
+    ("awaiting", "Waiting for an expert's verdict"),
 )
 
 

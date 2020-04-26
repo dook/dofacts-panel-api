@@ -10,13 +10,13 @@ class UserRoleType(models.TextChoices):
 
 
 class UserSpecializationType(models.TextChoices):
-    JOURNALISM = "journalism", _("Dziennikarstwo")
-    BIOLOGY = "biology", _("Biologia")
-    PHYSICS = "physics", _("Fizyka")
+    JOURNALISM = "journalism", _("Journalism")
+    BIOLOGY = "biology", _("Biology")
+    PHYSICS = "physics", _("Physics")
     IT = "IT", _("IT")
-    CHEMISTRY = "chemistry", _("Chemia")
-    ECONOMY = "economy", _("Ekonomia")
-    OTHER = "other", _("Inna")
+    CHEMISTRY = "chemistry", _("Chemistry")
+    ECONOMY = "economy", _("Economy")
+    OTHER = "other", _("Other")
 
 
 class InvitationStatusType(models.TextChoices):

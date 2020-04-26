@@ -8,8 +8,8 @@ from dook.processor.managers import NewsDraftManager
 
 
 class ProcessingResult(models.TextChoices):
-    ASSIGNED = "assigned", _("Przypisany")
-    DUPLICATE = "duplicate", _("Duplikat")
+    ASSIGNED = "assigned", _("Assigned")
+    DUPLICATE = "duplicate", _("Duplicate")
 
 
 class NewsDraft(models.Model):
