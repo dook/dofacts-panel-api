@@ -11,7 +11,7 @@ class UppercaseValidator(object):
     def validate(self, password, user=None):
         if not re.findall("[A-Z]", password):
             raise ValidationError(
-                _("Twoje hasło musi zawierać przynajmniej 1 wielką literę, A-Z."),
+                _("The password must contain at least 1 uppercase letter, A-Z."),
                 code="password_no_upper",
             )
 
@@ -23,7 +23,7 @@ class LowercaseValidator(object):
     def validate(self, password, user=None):
         if not re.findall("[a-z]", password):
             raise ValidationError(
-                _("Twoje hasło musi zawierać przynajmniej 1 małą literę, a-z."),
+                _("The password must contain at least 1 lowercase letter, a-z."),
                 code="password_no_lower",
             )
 
@@ -43,9 +43,11 @@ class SymbolValidator(object):
             )
 
     def get_help_text(self):
-        return _(
-            "Twoje hasło musi zawierać przynajmniej 1 symbol: "
-            + "()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?"
+        return (
+            _(
+                "The password must contain at least 1 symbol: "
+                + "()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?"
+            ),
         )
 
 
