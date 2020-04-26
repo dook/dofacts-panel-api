@@ -234,7 +234,6 @@ PANEL_DOMAIN_NAME = env("DOMAIN_NAME", default="panel.app.fakehunter.pap.pl")
 # TODO: Add subscribers autodiscovery
 EVENTS = {
     "news_new_verdict": [
-        "dook.integrations.chatbot.events.NewsNewVerdictSubscriber",
         "dook.users.events.NewsNewVerdictSubscriber",
     ]
 }
