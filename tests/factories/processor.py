@@ -1,7 +1,7 @@
 import factory
 from django.utils import timezone
 
-from dook.processor.models import NewsDraft
+from dofacts.processor.models import NewsDraft
 
 
 class NewsDraftFactory(factory.DjangoModelFactory):
