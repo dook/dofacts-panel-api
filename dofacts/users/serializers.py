@@ -73,9 +73,7 @@ class RegistrationInvitationSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "user_role": {
                 "required": True,
-                "error_messages": {"required": "Pole user_role jest wymagane"},
-            },
-            "email": {"error_messages": {"required": "Pole email jest wymagane"}},
+            }
         }
 
     def create(self, validated_data):

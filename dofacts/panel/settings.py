@@ -223,7 +223,7 @@ LOGGING = {
 ASSIGNMENT_ACTIVITY_PERIOD_MINUTES = 60  # minutes
 TARGET_ASSIGNMENTS_PER_NEWS_COUNT = 4
 
-PANEL_DOMAIN_NAME = env("DOMAIN_NAME", default="panel.app.fakehunter.pap.pl")
+PANEL_DOMAIN_NAME = env("DOMAIN_NAME", default="panel.app.dofacts.pl")
 
 # TODO: Add subscribers autodiscovery
 EVENTS = {

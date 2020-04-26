@@ -91,7 +91,7 @@ def send_news_verified_notification(user_email, news_pk, verdict_type):
         "VERIFIED_BY_FACT_CHECKER": "news_verified_notification_by_fc.html",
     }
     # swap url
-    url = f"https://app.fakehunter.pap.pl/{news_pk}"
+    url = f"https://app.dofacts.pl/{news_pk}"
 
     NEWS_VERIFIED_SUBJECT = "[DoFacts] Your verification request has been checked."
 

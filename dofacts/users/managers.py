@@ -56,9 +56,9 @@ class UserQuerySet(models.QuerySet):
 class UserManagerBase(BaseUserManager):
     def create_user(self, email, name, password, specialization=None, role=None):
         if not email:
-            raise ValueError("Proszę podać email.")
+            raise ValueError("Please provide an email.")
         if not name:
-            raise ValueError("Proszę podać nazwę użytkownika.")
+            raise ValueError("Please provide an user name.")
 
         email = email.lower()
         user = self.model(
