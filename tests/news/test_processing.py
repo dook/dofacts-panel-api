@@ -1,10 +1,10 @@
 import pytest
-
 from assertpy import assert_that
-from dook.news.models import News
-from dook.processor.duplicates.aggregators import DummyAggregator
-from dook.processor.duplicates.finders import DummyDuplicatesFinder
-from dook.processor.processor import NewsDraftProcessor
+
+from dofacts.news.models import News
+from dofacts.processor.duplicates.aggregators import DummyAggregator
+from dofacts.processor.duplicates.finders import DummyDuplicatesFinder
+from dofacts.processor.processor import NewsDraftProcessor
 from tests.factories.news import KeywordFactory, NewsFactory
 from tests.factories.processor import NewsDraftFactory
 from tests.factories.users import UserFactory
@@ -68,7 +68,7 @@ class TestNewsProcessing:
 
     @pytest.mark.django_db
     def test_materialize_news_with_sensitive_keywords(self, default_draft_news):
-        fact_checkers = UserFactory.create_batch(10)
+        _fact_checkers = UserFactory.create_batch(10)  # noqa
         KeywordFactory(name="method")
         KeywordFactory(name="keycap")
 

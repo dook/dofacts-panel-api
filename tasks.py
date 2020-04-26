@@ -1,9 +1,9 @@
 from invoke import task
 
-LINE_LENGTH = "90"
+LINE_LENGTH = "100"
 
-PATHS = ["dook", "tests"]
-EXCLUDE = ["*/migrations/*", "*/users/*"]
+PATHS = ["dofacts", "tests"]
+EXCLUDE = ["*/migrations/*"]
 
 
 @task
@@ -31,3 +31,8 @@ def black(c):
 def reformat(c):
     isort(c)
     black(c)
+
+
+@task
+def lint(c):
+    c.run(f"flake8 --max-line-length {LINE_LENGTH} --extend-ignore=E203")

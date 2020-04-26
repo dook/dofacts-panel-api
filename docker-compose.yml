@@ -9,7 +9,7 @@ services:
     volumes:
       - postgres_volume:/var/lib/postgresql
     env_file:
-      - dook/.env
+      - dofacts/.env
   api:
     container_name: dofacts-panel-api
     build:
@@ -17,15 +17,13 @@ services:
       dockerfile: Dockerfile-dev
     command: bash -c "sleep 2s && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     ports:
-      - "8080:8000"
+      - "8081:8000"
     volumes:
-      - ./dook:/app/dook
-      - ./tests:/app/tests
-      - ./data/media:/public/media
+      - ./:/app
     depends_on:
       - db
     env_file:
-      - dook/.env
+      - dofacts/.env
     stdin_open: true
     tty: true
 volumes:

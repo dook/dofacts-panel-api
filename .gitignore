@@ -6,6 +6,7 @@ scripts/
 public/
 env/
 data/
+.vscode
 
 .env
 local.env
@@ -15,3 +16,4 @@ local.env
 *.py[ozdc]
 .python-version
 setup.py
+__pycache__/
