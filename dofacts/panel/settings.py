@@ -95,9 +95,7 @@ WSGI_APPLICATION = "dofacts.panel.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": env(
-            "DATABASE_BACKEND", default="django.db.backends.postgresql_psycopg2"
-        ),
+        "ENGINE": env("DATABASE_BACKEND", default="django.db.backends.postgresql_psycopg2"),
         "NAME": env("POSTGRES_DB", default="postgres"),
         "HOST": env("POSTGRES_HOST", default="db"),
         "USER": env("POSTGRES_USER", default="postgres"),
@@ -105,22 +103,18 @@ DATABASES = {
         "ATOMIC_REQUESTS": True,
     },
     "readonly": {
-        "ENGINE": env(
-            "DATABASE_BACKEND", default="django.db.backends.postgresql_psycopg2"
-        ),
+        "ENGINE": env("DATABASE_BACKEND", default="django.db.backends.postgresql_psycopg2"),
         "NAME": env("POSTGRES_DB", default="postgres"),
         "HOST": env("POSTGRES_READONLY_HOST", default="db"),
         "USER": env("POSTGRES_USER", default="postgres"),
         "PASSWORD": env("POSTGRES_PASSWORD", default="postgres"),
-        "TEST": {"MIRROR": "default",},
+        "TEST": {"MIRROR": "default"},
     },
 }
 
 REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.TokenAuthentication",
-    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": ("rest_framework.authentication.TokenAuthentication",),
     "DEFAULT_PAGINATION_CLASS": "dofacts.api.paginations.CustomPageNumberPagination",
     "PAGE_SIZE": 20,
 }
@@ -133,13 +127,13 @@ ATOMIC_REQUESTS = True
 AUTH_USER_MODEL = "users.User"
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
-    {"NAME": "dofacts.users.validators.UppercaseValidator",},
-    {"NAME": "dofacts.users.validators.LowercaseValidator",},
-    {"NAME": "dofacts.users.validators.SymbolValidator",},
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {"NAME": "dofacts.users.validators.UppercaseValidator"},
+    {"NAME": "dofacts.users.validators.LowercaseValidator"},
+    {"NAME": "dofacts.users.validators.SymbolValidator"},
 ]
 
 PASSWORD_RESET_TIMEOUT_DAYS = 1
@@ -180,7 +174,7 @@ ANYMAIL = {
         "aws_secret_access_key": env("AWS_SECRET_ACCESS_KEY", default=""),
         "region_name": env("REGION_NAME", default=""),
         # override other default options
-        "config": {"connect_timeout": 30, "read_timeout": 30,},
+        "config": {"connect_timeout": 30, "read_timeout": 30},
     },
 }
 
@@ -205,12 +199,12 @@ LOGGING = {
         'verbose': {
             'format': '[{levelname} {asctime}] {module} {process:d} {thread:d} {message}',
             'style': '{',
-            'datefmt':'%Y-%m-%d %H:%M:%S',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
         },
         'simple': {
             'format': '[{levelname} {asctime}] {message}',
             'style': '{',
-            'datefmt':'%Y-%m-%d %H:%M:%S',
+            'datefmt': '%Y-%m-%d %H:%M:%S',
         },
     },
     "loggers": {
@@ -234,7 +228,6 @@ PANEL_DOMAIN_NAME = env("DOMAIN_NAME", default="panel.app.fakehunter.pap.pl")
 # TODO: Add subscribers autodiscovery
 EVENTS = {
     "news_new_verdict": [
-        "dofacts.integrations.chatbot.events.NewsNewVerdictSubscriber",
         "dofacts.users.events.NewsNewVerdictSubscriber",
     ]
 }

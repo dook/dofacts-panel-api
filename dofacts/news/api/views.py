@@ -8,11 +8,7 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.viewsets import GenericViewSet
 
 from dofacts.admin.permissions import IsExpert, IsFactChecker
-from dofacts.news.api.filters import (
-    ExpertNewsFilter,
-    FactCheckerNewsFilter,
-    NewsVerifiedFilter,
-)
+from dofacts.news.api.filters import ExpertNewsFilter, FactCheckerNewsFilter, NewsVerifiedFilter
 from dofacts.news.api.serializers import (
     ExpertNewsSerializer,
     ExpertOpinionSerializer,
@@ -116,7 +112,7 @@ class NewsVerifiedViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin):
             .with_expert_opinions()
             .with_assigned_to_me(self.request.user)
             .with_verdicts()
-            .filter(current_verdict__in=["true", "false", "unidentified",])
+            .filter(current_verdict__in=["true", "false", "unidentified"])
             .with_is_duplicate()
             .with_is_about_corona_virus()
         )

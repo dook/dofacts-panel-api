@@ -3,7 +3,6 @@ from collections import Counter
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError, models
-from django.utils.translation import gettext_lazy as _
 
 from dofacts.events.mixins import ModelEventMixin
 from dofacts.news.constants import VerdictType
@@ -87,7 +86,8 @@ class News(ModelEventMixin, models.Model):
 
 class OpinionBase(models.Model):
     """
-    OpinionBase model is a system base representation of opinion for an corresponding News instance.
+    OpinionBase model is a system base representation of opinion
+    for an corresponding News instance.
     """
 
     judge = models.ForeignKey(
@@ -97,9 +97,7 @@ class OpinionBase(models.Model):
         related_query_name="%(class)s",
     )
     verdict = models.CharField(
-        max_length=50,
-        choices=VerdictType.choices,
-        default=VerdictType.CANNOT_BE_VERIFIED,
+        max_length=50, choices=VerdictType.choices, default=VerdictType.CANNOT_BE_VERIFIED,
     )
 
     title = models.TextField(blank=False)
@@ -117,7 +115,8 @@ class OpinionBase(models.Model):
 
 class FactCheckerOpinion(OpinionBase):
     """
-    FastCheckerOpinion model is case specific for opinion judged by user with FastChecker role in the system.
+    FastCheckerOpinion model is case specific for opinion judged
+    by user with FastChecker role in the system.
     """
 
     news = models.ForeignKey(
@@ -133,7 +132,8 @@ class FactCheckerOpinion(OpinionBase):
 
 class ExpertOpinion(OpinionBase):
     """
-    ExpertOpinion model is case specific for opinion judged by user with Expert role in the system.
+    ExpertOpinion model is case specific for opinion
+    judged by user with Expert role in the system.
     """
 
     news = models.OneToOneField(News, on_delete=models.CASCADE, primary_key=False,)
@@ -162,9 +162,7 @@ class SensitiveKeyword(Keyword):
 
 class NewsSensitiveKeyword(models.Model):
     sensitive_keyword = models.ForeignKey(
-        SensitiveKeyword,
-        on_delete=models.CASCADE,
-        related_name="newssensitivekeyword_set",
+        SensitiveKeyword, on_delete=models.CASCADE, related_name="newssensitivekeyword_set",
     )
     news = models.ForeignKey(News, on_delete=models.CASCADE)
 

@@ -2,13 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from dofacts.news.constants import VerdictType
-from dofacts.news.models import (
-    ExpertOpinion,
-    FactCheckerOpinion,
-    News,
-    NewsSensitiveKeyword,
-    OpinionBase,
-)
+from dofacts.news.models import ExpertOpinion, FactCheckerOpinion, News, NewsSensitiveKeyword
 
 
 class ExpertOpinionSerializer(serializers.ModelSerializer):
@@ -60,9 +54,7 @@ class ExpertOpinionSerializer(serializers.ModelSerializer):
         verdict = data.get("verdict", "unidentified")
         if verdict == "spam":
             if len(data.keys()) != 1:
-                raise ValidationError(
-                    "Spam verdicts can not contain additional parameters"
-                )
+                raise ValidationError("Spam verdicts can not contain additional parameters")
             return data
 
         is_duplicate = data.get("is_duplicate", False)

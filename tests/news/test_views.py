@@ -5,16 +5,8 @@ from django.urls import reverse
 
 from dofacts.news.constants import VerdictType
 from dofacts.news.models import ExpertOpinion, FactCheckerOpinion
-from dofacts.users.constants import (
-    InvitationStatusType,
-    InvitationUserRoleType,
-    UserRoleType,
-)
-from tests.factories.news import (
-    ExpertOpinionFactory,
-    FactCheckerOpinionFactory,
-    NewsFactory,
-)
+from dofacts.users.constants import UserRoleType
+from tests.factories.news import FactCheckerOpinionFactory, NewsFactory
 from tests.factories.users import UserFactory, UserNewsFactory
 
 
@@ -56,9 +48,7 @@ class TestExpertNewsViewSet:
             }
 
             assert mocked["send_news_verified_notification"].called
-            assert mocked["send_news_verified_notification"].call_args == mock.call(
-                **email_args
-            )
+            assert mocked["send_news_verified_notification"].call_args == mock.call(**email_args)
 
     @pytest.mark.django_db
     def test_already_verified_by_fcs(self, api_client, default_opinion_data):
@@ -88,9 +78,7 @@ class TestExpertNewsViewSet:
             }
 
             assert mocked["send_news_verified_notification"].called
-            assert mocked["send_news_verified_notification"].call_args == mock.call(
-                **email_args
-            )
+            assert mocked["send_news_verified_notification"].call_args == mock.call(**email_args)
 
 
 class TestFactCheckerNewsViewSet:
@@ -111,9 +99,7 @@ class TestFactCheckerNewsViewSet:
             api_client.force_authenticate(user=user_1)
             response = api_client.post(url, default_opinion_data, format="json")
 
-            fc_opinion = FactCheckerOpinion.objects.filter(
-                news=news, judge=user_1
-            ).first()
+            fc_opinion = FactCheckerOpinion.objects.filter(news=news, judge=user_1).first()
 
             assert fc_opinion
             assert mocked["send_news_verified_notification"].called is False
@@ -121,9 +107,7 @@ class TestFactCheckerNewsViewSet:
             api_client.force_authenticate(user=user_2)
             response = api_client.post(url, default_opinion_data, format="json")
 
-            fc_opinion = FactCheckerOpinion.objects.filter(
-                news=news, judge=user_2
-            ).first()
+            fc_opinion = FactCheckerOpinion.objects.filter(news=news, judge=user_2).first()
 
             assert fc_opinion
             assert response.status_code == 201
@@ -135,6 +119,4 @@ class TestFactCheckerNewsViewSet:
             }
 
             assert mocked["send_news_verified_notification"].called
-            assert mocked["send_news_verified_notification"].call_args == mock.call(
-                **email_args
-            )
+            assert mocked["send_news_verified_notification"].call_args == mock.call(**email_args)

@@ -14,11 +14,7 @@ from dofacts.users.constants import (
     UserSpecializationType,
 )
 from dofacts.users.email_service import send_registration_invitation_email
-from dofacts.users.exceptions import (
-    InvitationAlreadyExistException,
-    UserAlreadyExistException,
-    UserDoesNotExistException,
-)
+from dofacts.users.exceptions import InvitationAlreadyExistException, UserAlreadyExistException
 from dofacts.users.managers import FactCheckersManager, UserManager, UserNewsManager
 
 
@@ -32,9 +28,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=30, choices=UserRoleType.choices, default=UserRoleType.FACT_CHECKER,
     )
     specialization = models.CharField(
-        max_length=30,
-        choices=UserSpecializationType.choices,
-        default=UserSpecializationType.OTHER,
+        max_length=30, choices=UserSpecializationType.choices, default=UserSpecializationType.OTHER,
     )
     created_at = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
@@ -78,9 +72,7 @@ class Invitation(models.Model):
         error_messages={"unique": "Zaproszenie z takim adresem email już istnieje."},
     )
     status = models.CharField(
-        max_length=30,
-        choices=InvitationStatusType.choices,
-        default=InvitationStatusType.WAITING,
+        max_length=30, choices=InvitationStatusType.choices, default=InvitationStatusType.WAITING,
     )
     user_role = models.CharField(
         max_length=30,
@@ -100,10 +92,7 @@ class Invitation(models.Model):
     def key_expired(self):
         expiration_date = self.sent_at + timedelta(days=settings.INVITATION_EXPIRY)
         expired = expiration_date <= datetime.utcnow().date()
-        if expired or self.status in (
-            InvitationStatusType.FAILED,
-            InvitationStatusType.USED,
-        ):
+        if expired or self.status in (InvitationStatusType.FAILED, InvitationStatusType.USED,):
             return True
         else:
             return False

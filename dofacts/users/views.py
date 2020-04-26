@@ -17,10 +17,8 @@ from dofacts.users.email_service import (
     send_registration_confirmation_email,
 )
 from dofacts.users.exceptions import (
-    EmailAlreadyConfirmedException,
     InternalEmailErrorException,
     InternalSignUpErrorException,
-    InvalidActivationUrlException,
     InvalidInviteTokenException,
     InvalidPasswordException,
     TokenAlreadyExpiredException,
@@ -107,6 +105,7 @@ class ActivateAccountView(APIView):
     def get(self, request, uidb64, token):
         account_activation_token_generator.validate_token(uidb64, token)
 
+        user = get_user_from_uid(uidb64)
         user.is_active = True
         user.is_verified = True
         user.save()
@@ -191,8 +190,7 @@ class PasswordResetRequestView(generics.GenericAPIView):
             self.send_email(user)
 
         return Response(
-            "Check provided email address for further instructions.",
-            status=status.HTTP_200_OK,
+            "Check provided email address for further instructions.", status=status.HTTP_200_OK,
         )
 
     def send_email(self, user):
@@ -223,9 +221,7 @@ class PasswordResetView(generics.GenericAPIView):
         user = get_user_from_uid(uidb64)
         self.change_password(user, serializer.validated_data)
 
-        return Response(
-            "Your password has been reset successfully.", status=status.HTTP_200_OK
-        )
+        return Response("Your password has been reset successfully.", status=status.HTTP_200_OK)
 
     def change_password(self, user, data):
         user.set_password(data["password"])
@@ -243,9 +239,7 @@ class InternalPasswordResetView(generics.GenericAPIView):
         user = request.user
         self.change_password(user, serializer.validated_data)
 
-        return Response(
-            "Your password has been reset successfully.", status=status.HTTP_200_OK
-        )
+        return Response("Your password has been reset successfully.", status=status.HTTP_200_OK)
 
     def change_password(self, user, data):
         if user.check_password(data["old_password"]) is False:

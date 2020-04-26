@@ -6,11 +6,6 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from dofacts.users.constants import (
-    InvitationStatusType,
-    InvitationUserRoleType,
-    UserRoleType,
-)
 from dofacts.users.models import User
 from dofacts.users.tokens import password_reset_token_generator
 from tests.factories.users import UserFactory
@@ -59,10 +54,7 @@ class TestPasswordResetView:
     def test_success_reset_get(self, api_client, default_reset_data):
         url = reverse(
             f"users:password_reset",
-            kwargs={
-                "uidb64": default_reset_data["uid"],
-                "token": default_reset_data["token"],
-            },
+            kwargs={"uidb64": default_reset_data["uid"], "token": default_reset_data["token"]},
         )
         response = api_client.get(url, format="json")
 
@@ -72,10 +64,7 @@ class TestPasswordResetView:
     def test_success_reset_post(self, api_client, default_reset_data):
         url = reverse(
             f"users:password_reset",
-            kwargs={
-                "uidb64": default_reset_data["uid"],
-                "token": default_reset_data["token"],
-            },
+            kwargs={"uidb64": default_reset_data["uid"], "token": default_reset_data["token"]},
         )
         new_password = "Password54321!"
         data = {"password": new_password, "password2": new_password}
@@ -104,10 +93,7 @@ class TestPasswordResetView:
     def test_invalid_token(self, api_client, default_reset_data):
         url = reverse(
             f"users:password_reset",
-            kwargs={
-                "uidb64": default_reset_data["uid"],
-                "token": "5ff-4409af0e1e600a7c78f9",
-            },
+            kwargs={"uidb64": default_reset_data["uid"], "token": "5ff-4409af0e1e600a7c78f9"},
         )
         new_password = "Password54321!"
         data = {"password": new_password, "password2": new_password}
@@ -115,9 +101,7 @@ class TestPasswordResetView:
 
         assert response.status_code == 400
         assert_that(response.data["detail"].code).is_equal_to("invalid_token_error")
-        assert_that(
-            default_reset_data["user"].check_password(raw_password=new_password)
-        ).is_false()
+        assert_that(default_reset_data["user"].check_password(raw_password=new_password)).is_false()
 
 
 class TestInternalPasswordResetView:

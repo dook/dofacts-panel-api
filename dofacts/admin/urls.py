@@ -18,8 +18,6 @@ urlpatterns = [
     path("users/<uuid:pk>", UserDetailView.as_view(), name="user-detail"),
     path("news/<uuid:pk>", NewsDetailView.as_view(), name="news-detail"),
     path("news", NewsListView.as_view(), name="news-list"),
-    path(
-        "keywords/<uuid:pk>", SensitiveKeywordDetailView.as_view(), name="keywords-detail"
-    ),
+    path("keywords/<uuid:pk>", SensitiveKeywordDetailView.as_view(), name="keywords-detail"),
     path("keywords", SensitiveKeywordListView.as_view(), name="keywords-list"),
 ]

@@ -33,11 +33,11 @@ class LowercaseValidator(object):
 
 class SymbolValidator(object):
     def validate(self, password, user=None):
-        if not re.findall("[()[\]{}|\\`~!@#$%^&*_\-+=;:'\",<>./?]", password):
+        if not re.findall(r"[()[\]{}|\\`~!@#$%^&*_\-+=;:'\",<>./?]", password):
             raise ValidationError(
                 _(
                     "Twoje hasło musi zawierać przynajmniej 1 symbol: "
-                    + "()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?"
+                    + r"()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?"
                 ),
                 code="password_no_symbol",
             )
@@ -46,7 +46,7 @@ class SymbolValidator(object):
         return (
             _(
                 "The password must contain at least 1 symbol: "
-                + "()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?"
+                + r"()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?"
             ),
         )
 

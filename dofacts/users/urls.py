@@ -15,24 +15,14 @@ from dofacts.users.views import (
 urlpatterns = [
     path("sign-up/<token>", SignUpView.as_view(), name="sign_up"),
     path("login", CreateTokenView.as_view(), name="login"),
-    path(
-        "activate/<uidb64>/<token>/",
-        ActivateAccountView.as_view(),
-        name="activate_account",
-    ),
+    path("activate/<uidb64>/<token>/", ActivateAccountView.as_view(), name="activate_account",),
     path("send-invite", CreateInvitationView.as_view(), name="send_invite"),
     path("accept-invite/<token>", AcceptInviteView.as_view(), name="accept_invite"),
     path("current-user", UserDetailView.as_view(), name="current_user"),
     path(
-        "reset-password-request",
-        PasswordResetRequestView.as_view(),
-        name="password_reset_request",
+        "reset-password-request", PasswordResetRequestView.as_view(), name="password_reset_request",
     ),
-    path(
-        "reset-password/<uidb64>/<token>",
-        PasswordResetView.as_view(),
-        name="password_reset",
-    ),
+    path("reset-password/<uidb64>/<token>", PasswordResetView.as_view(), name="password_reset",),
     path(
         "internal-reset-password",
         InternalPasswordResetView.as_view(),

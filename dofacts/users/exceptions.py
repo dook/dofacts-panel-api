@@ -64,9 +64,7 @@ class PasswordConfirmationFailedException(exceptions.APIException):
 
 class EmailNotVerifiedException(exceptions.APIException):
     status_code = status.HTTP_403_FORBIDDEN
-    default_detail = _(
-        "The user's email has not been confirmed. Confirm this email address."
-    )
+    default_detail = _("The user's email has not been confirmed. Confirm this email address.")
     default_code = "email_not_verified"
 
 

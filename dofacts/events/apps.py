@@ -11,6 +11,4 @@ class EventsConfig(AppConfig):
         for subscribers in settings.EVENTS.values():
             for subscriber_path in subscribers:
                 if not locate(subscriber_path):
-                    raise ModuleNotFoundError(
-                        f"Event subscriber not found <{subscriber_path}>"
-                    )
+                    raise ModuleNotFoundError(f"Event subscriber not found <{subscriber_path}>")

@@ -116,9 +116,7 @@ class NewsListSerializer(serializers.ModelSerializer):
 
 class NewsDetailSerializer(serializers.ModelSerializer):
     expertopinion = ExpertOpinionExtendedSerializer(many=False, read_only=True,)
-    factcheckeropinion_set = FactCheckerOpinionExtendedSerializer(
-        many=True, read_only=True
-    )
+    factcheckeropinion_set = FactCheckerOpinionExtendedSerializer(many=True, read_only=True)
 
     class Meta:
         model = News

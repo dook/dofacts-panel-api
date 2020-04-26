@@ -27,9 +27,7 @@ class NewsNewVerdictSubscriber:
             logger.error(InternalEmailErrorException.default_detail)
         else:
             if email_send:
-                logger.info(
-                    f"Verification notification has been sent, for news with id: {obj.id}"
-                )
+                logger.info(f"Verification notification has been sent, for news with id: {obj.id}")
             else:
                 logger.error(
                     f"Verification notification sending failed, for news with id: {obj.id}"

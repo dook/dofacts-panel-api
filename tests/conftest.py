@@ -24,7 +24,6 @@ def api_client():
 def admin_api_client(db, admin_user):
     """A Django test client logged in as an admin user."""
     from rest_framework.test import APIClient
-    from rest_framework.authtoken.models import Token
 
     client = APIClient()
     client.force_authenticate(user=admin_user)
@@ -35,7 +34,6 @@ def admin_api_client(db, admin_user):
 def default_user(db, django_user_model):
 
     email = "user@example.com"
-    password = "password"
 
     user, created = User.objects.get_or_create(email=email)
     user.set_password("password")
@@ -46,7 +44,6 @@ def default_user(db, django_user_model):
 @pytest.fixture()
 def authenticated_api_client(db, default_user):
     from rest_framework.test import APIClient
-    from rest_framework.authtoken.models import Token
 
     client = APIClient()
     client.force_authenticate(user=default_user)

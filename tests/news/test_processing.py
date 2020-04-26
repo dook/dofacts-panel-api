@@ -68,7 +68,7 @@ class TestNewsProcessing:
 
     @pytest.mark.django_db
     def test_materialize_news_with_sensitive_keywords(self, default_draft_news):
-        fact_checkers = UserFactory.create_batch(10)
+        _fact_checkers = UserFactory.create_batch(10)  # noqa
         KeywordFactory(name="method")
         KeywordFactory(name="keycap")
 

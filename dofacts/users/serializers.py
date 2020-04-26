@@ -1,4 +1,3 @@
-from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.authentication import authenticate
 
@@ -7,7 +6,6 @@ from dofacts.users.exceptions import (
     InactiveAccountException,
     InvalidCredentialsException,
     PasswordConfirmationFailedException,
-    PasswordTooWeakException,
 )
 from dofacts.users.models import Invitation, User
 from dofacts.users.validators import validate_password
@@ -82,8 +80,7 @@ class RegistrationInvitationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         invitation = Invitation.create(
-            email=self.validated_data["email"],
-            user_role=self.validated_data["user_role"],
+            email=self.validated_data["email"], user_role=self.validated_data["user_role"],
         )
         return invitation
 

@@ -25,14 +25,11 @@ class NewsQuerySet(models.QuerySet):
             spam_verdicts_fc=Count(
                 "factcheckeropinion", filter=Q(factcheckeropinion__verdict="spam")
             ),
-            spam_verdicts_expert=Count(
-                "expertopinion", filter=Q(expertopinion__verdict="spam")
-            ),
+            spam_verdicts_expert=Count("expertopinion", filter=Q(expertopinion__verdict="spam")),
         ).annotate(
             is_spam=Case(
                 When(
-                    (Q(spam_verdicts_fc__gte=2) | Q(spam_verdicts_expert__gte=1)),
-                    then=Value(True),
+                    (Q(spam_verdicts_fc__gte=2) | Q(spam_verdicts_expert__gte=1)), then=Value(True),
                 ),
                 output_field=BooleanField(),
                 default=Value(False),
@@ -59,8 +56,7 @@ class NewsQuerySet(models.QuerySet):
     def with_is_about_corona_virus(self):
         return self.annotate(
             not_about_corona_virus_fc=Count(
-                "factcheckeropinion",
-                filter=Q(factcheckeropinion__about_corona_virus=False),
+                "factcheckeropinion", filter=Q(factcheckeropinion__about_corona_virus=False),
             ),
         ).annotate(
             is_about_corona_virus=Case(
@@ -79,15 +75,10 @@ class NewsQuerySet(models.QuerySet):
             self.with_fact_checker_opinions()
             .with_expert_opinions()
             .annotate(
-                true=Count(
-                    "factcheckeropinion", filter=Q(factcheckeropinion__verdict="true")
-                ),
-                false=Count(
-                    "factcheckeropinion", filter=Q(factcheckeropinion__verdict="false")
-                ),
+                true=Count("factcheckeropinion", filter=Q(factcheckeropinion__verdict="true")),
+                false=Count("factcheckeropinion", filter=Q(factcheckeropinion__verdict="false")),
                 unidentified=Count(
-                    "factcheckeropinion",
-                    filter=Q(factcheckeropinion__verdict="unidentified"),
+                    "factcheckeropinion", filter=Q(factcheckeropinion__verdict="unidentified"),
                 ),
                 spam_verdicts=Count(
                     "factcheckeropinion", filter=Q(factcheckeropinion__verdict="spam")
@@ -95,10 +86,7 @@ class NewsQuerySet(models.QuerySet):
             )
             .annotate(
                 current_verdict=Case(
-                    When(
-                        expertopinion__verdict__isnull=False,
-                        then=F("expertopinion__verdict"),
-                    ),
+                    When(expertopinion__verdict__isnull=False, then=F("expertopinion__verdict"),),
                     When(
                         (Q(true__gte=1) & Q(false__gte=1))
                         | (Q(spam_verdicts=1) & (Q(false__gte=1) | Q(true__gte=1)))
@@ -124,10 +112,7 @@ class NewsQuerySet(models.QuerySet):
             .annotate(confirmed=Count("factcheckeropinion"))
             .annotate(
                 current_verdict=Case(
-                    When(
-                        expertopinion__verdict__isnull=False,
-                        then=F("expertopinion__verdict"),
-                    ),
+                    When(expertopinion__verdict__isnull=False, then=F("expertopinion__verdict"),),
                     When(confirmed__gt=0, then=Value("awaiting")),
                     When(confirmed=0, then=Value("no_verdict")),
                 )
@@ -137,9 +122,7 @@ class NewsQuerySet(models.QuerySet):
 
     def with_has_user_opinion(self, user):
         return self.with_usernews_table().annotate(
-            is_opined=Count(
-                "factcheckeropinion", filter=Q(factcheckeropinion__judge=user)
-            )
+            is_opined=Count("factcheckeropinion", filter=Q(factcheckeropinion__judge=user))
         )
 
     def with_assigned_at(self, user):
@@ -210,7 +193,6 @@ class NewsManager(models.Manager.from_queryset(NewsQuerySet)):
 class NewsSensitiveKeywordsManager(models.Manager):
     def assign_keywords_to_news(self, sensitive_keywords, news):
         news_keywords = [
-            self.model(sensitive_keyword=keyword, news=news)
-            for keyword in sensitive_keywords
+            self.model(sensitive_keyword=keyword, news=news) for keyword in sensitive_keywords
         ]
         self.bulk_create(news_keywords)

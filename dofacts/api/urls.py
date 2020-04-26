@@ -1,11 +1,7 @@
 from django.urls import include, re_path
 from rest_framework import routers
 
-from dofacts.news.api.views import (
-    ExpertNewsViewSet,
-    FactCheckerNewsViewSet,
-    NewsVerifiedViewSet,
-)
+from dofacts.news.api.views import ExpertNewsViewSet, FactCheckerNewsViewSet, NewsVerifiedViewSet
 
 router = routers.DefaultRouter()
 

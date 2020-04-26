@@ -46,9 +46,7 @@ class FactCheckerListView(generics.ListAPIView):
     filterset_class = AdminUsersFilter
 
     def get_queryset(self):
-        return (
-            self.model.objects.fact_checkers_with_opinions_count().with_assigned_news_count()
-        )
+        return self.model.objects.fact_checkers_with_opinions_count().with_assigned_news_count()
 
 
 class InvitationListView(generics.ListAPIView):
@@ -92,9 +90,7 @@ class NewsDetailView(generics.RetrieveAPIView, generics.UpdateAPIView):
     serializer_action__class = {"PATCH": NewsUpdateSerializer}
 
     def get_serializer_class(self):
-        return self.serializer_action__class.get(
-            self.request.method, self.serializer_class
-        )
+        return self.serializer_action__class.get(self.request.method, self.serializer_class)
 
     def get_queryset(self, *args, **kwargs):
         return (

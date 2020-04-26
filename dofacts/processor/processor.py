@@ -29,9 +29,7 @@ class ProcessorBase:
 
 
 class NewsDraftProcessor(ProcessorBase):
-    def __init__(
-        self, finder: NewsDuplicatesFinder, aggregator: NewsDuplicatesAggregator
-    ):
+    def __init__(self, finder: NewsDuplicatesFinder, aggregator: NewsDuplicatesAggregator):
         super().__init__()
         self.aggregator = aggregator
         self.finder = finder
@@ -54,9 +52,7 @@ class NewsDraftProcessor(ProcessorBase):
             try:
                 self.process_draft(news_draft)
             except Exception:
-                self.logger.exception(
-                    f"Processing of {news_draft} failed with unhandled exception"
-                )
+                self.logger.exception(f"Processing of {news_draft} failed with unhandled exception")
 
     def next_batch(self):
         batch_size = self.get_batch_size()
@@ -65,9 +61,7 @@ class NewsDraftProcessor(ProcessorBase):
     def get_batch_size(self):
         # we want to assign one news per fact checker on average
         return int(
-            math.ceil(
-                self.fact_checkers.count() / settings.TARGET_ASSIGNMENTS_PER_NEWS_COUNT
-            )
+            math.ceil(self.fact_checkers.count() / settings.TARGET_ASSIGNMENTS_PER_NEWS_COUNT)
         )
 
     @atomic
@@ -127,9 +121,7 @@ class StaleNewsProcessor(ProcessorBase):
     def process_news(self):
         stale_news = self.get_stale_news_batch()
 
-        self.logger.info(
-            f"Assigning additional fact checkers to {len(stale_news)} stale news"
-        )
+        self.logger.info(f"Assigning additional fact checkers to {len(stale_news)} stale news")
 
         for news in stale_news:
             self.assign_additional_fact_checkers_to_stale_news(news)
@@ -142,9 +134,7 @@ class StaleNewsProcessor(ProcessorBase):
     def get_stale_news_batch_size(self):
         # no more than one additional news for each fact checker
         return int(
-            math.ceil(
-                self.fact_checkers.count() / settings.TARGET_ASSIGNMENTS_PER_NEWS_COUNT
-            )
+            math.ceil(self.fact_checkers.count() / settings.TARGET_ASSIGNMENTS_PER_NEWS_COUNT)
         )
 
     @atomic
@@ -155,13 +145,10 @@ class StaleNewsProcessor(ProcessorBase):
         transaction.on_commit(self.send_notifications_callback(checkers, news))
 
     def get_checkers(self, news):
-        missing = (
-            settings.TARGET_ASSIGNMENTS_PER_NEWS_COUNT - news.factcheckeropinion__count
-        )
+        missing = settings.TARGET_ASSIGNMENTS_PER_NEWS_COUNT - news.factcheckeropinion__count
         checkers = (
             self.fact_checkers.active_verified()
             .exclude_assigned_to_news(news)
-            .ordered_by_active_assignments_randomized()
-            [:missing]
+            .ordered_by_active_assignments_randomized()[:missing]
         )
         return checkers

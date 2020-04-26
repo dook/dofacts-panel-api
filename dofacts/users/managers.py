@@ -18,14 +18,14 @@ ACTIVE_ASSIGNMENTS_BOUNDARY_EXPR = (
 
 class UserQuerySet(models.QuerySet):
     def fact_checkers_with_opinions_count(self):
-        return self.annotate(
-            verified=models.Count("factcheckeropinion", distinct=True)
-        ).filter(role=UserRoleType.FACT_CHECKER)
+        return self.annotate(verified=models.Count("factcheckeropinion", distinct=True)).filter(
+            role=UserRoleType.FACT_CHECKER
+        )
 
     def experts_with_opinions_count(self):
-        return self.annotate(
-            verified=models.Count("expertopinion", distinct=True)
-        ).filter(role=UserRoleType.EXPERT)
+        return self.annotate(verified=models.Count("expertopinion", distinct=True)).filter(
+            role=UserRoleType.EXPERT
+        )
 
     def with_assigned_news_count(self):
         return self.annotate(assigned=models.Count("usernews_set", distinct=True))

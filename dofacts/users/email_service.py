@@ -8,7 +8,7 @@ from dofacts.panel.settings import EMAIL_HOST_USER
 def send_registration_confirm_email(url, user):
     REGISTRATION_CONFIRMATION_SUBJECT = "[DoFacts] Registration confirmation request."
     message = render_to_string(
-        "account_activation_email.html", {"user_name": user.name, "url": url,},
+        "account_activation_email.html", {"user_name": user.name, "url": url},
     )
 
     email = EmailMessage(
@@ -20,26 +20,20 @@ def send_registration_confirm_email(url, user):
 
 def send_account_confirmed_email(user):
     ACCOUNT_CONFIRMATION_SUBJECT = "[DoFacts] Account confirmed notification."
-    message = render_to_string("account_confirmed_email.html", {"user_name": user.name,},)
+    message = render_to_string("account_confirmed_email.html", {"user_name": user.name},)
 
-    email = EmailMessage(
-        ACCOUNT_CONFIRMATION_SUBJECT, message, EMAIL_HOST_USER, to=[user.email]
-    )
+    email = EmailMessage(ACCOUNT_CONFIRMATION_SUBJECT, message, EMAIL_HOST_USER, to=[user.email])
     email.send()
     return check_email_status(email.anymail_status.status)
 
 
 def send_registration_invitation_email(email, invite_url):
-    REGISTRATION_INVITATION_SUBJECT = (
-        "[DoFacts] Invitation to register in the DoFacts App."
-    )
+    REGISTRATION_INVITATION_SUBJECT = "[DoFacts] Invitation to register in the DoFacts App."
     message = render_to_string(
         "registration_invitation_email.html", {"email": email, "invite_url": invite_url},
     )
 
-    email = EmailMessage(
-        REGISTRATION_INVITATION_SUBJECT, message, EMAIL_HOST_USER, to=[email]
-    )
+    email = EmailMessage(REGISTRATION_INVITATION_SUBJECT, message, EMAIL_HOST_USER, to=[email])
     email.send()
     return check_email_status(email.anymail_status.status)
 
@@ -48,9 +42,7 @@ def send_registration_confirmation_email(name, email):
     REGISTRATION_CONFIRMATION_SUBJECT = "[DoFacts] Registration confirmation."
     message = render_to_string("registration_confirmation_email.html", {"name": name},)
 
-    email = EmailMessage(
-        REGISTRATION_CONFIRMATION_SUBJECT, message, EMAIL_HOST_USER, to=[email]
-    )
+    email = EmailMessage(REGISTRATION_CONFIRMATION_SUBJECT, message, EMAIL_HOST_USER, to=[email])
     email.send()
     return check_email_status(email.anymail_status.status)
 
@@ -58,7 +50,7 @@ def send_registration_confirmation_email(name, email):
 def send_password_reset_email(email, reset_url):
     PASSWORD_RESET_SUBJECT = "[DoFacts] Password reset request."
 
-    message = render_to_string("password_reset_email.html", {"reset_url": reset_url,},)
+    message = render_to_string("password_reset_email.html", {"reset_url": reset_url},)
 
     email = EmailMessage(PASSWORD_RESET_SUBJECT, message, EMAIL_HOST_USER, to=[email])
     email.send()
@@ -80,9 +72,7 @@ def assignment_notification_email_factory(user, news):
     url = get_news_url(news)
     message = render_to_string("assignment_notification_email.html", {"url": url},)
 
-    return EmailMessage(
-        subject=SUBJECT, body=message, from_email=EMAIL_HOST_USER, to=[user.email]
-    )
+    return EmailMessage(subject=SUBJECT, body=message, from_email=EMAIL_HOST_USER, to=[user.email])
 
 
 def get_news_url(news):
@@ -105,7 +95,7 @@ def send_news_verified_notification(user_email, news_pk, verdict_type):
 
     NEWS_VERIFIED_SUBJECT = "[DoFacts] Your verification request has been checked."
 
-    message = render_to_string(EMAIL_TEMPLATES[verdict_type], {"news_url": url,},)
+    message = render_to_string(EMAIL_TEMPLATES[verdict_type], {"news_url": url},)
 
     email = EmailMessage(NEWS_VERIFIED_SUBJECT, message, EMAIL_HOST_USER, to=[user_email])
     email.send()
