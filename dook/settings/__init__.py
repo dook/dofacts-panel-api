@@ -76,7 +76,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "dook.sfnf_panel.urls"
+ROOT_URLCONF = "dook.urls"
 
 TEMPLATES = [
     {
@@ -94,7 +94,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "dook.sfnf_panel.wsgi.application"
+WSGI_APPLICATION = "dook.wsgi.application"
 
 
 # Database
