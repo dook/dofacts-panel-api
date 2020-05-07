@@ -3,9 +3,8 @@ from collections import Counter
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError, models
-from django.utils.translation import gettext_lazy as _
 
-from dook.events.mixins import ModelEventMixin
+from dook.core.events.mixins import ModelEventMixin
 from dook.news.constants import VerdictType
 from dook.news.events import NewsEvents
 from dook.news.managers import NewsManager, NewsSensitiveKeywordsManager

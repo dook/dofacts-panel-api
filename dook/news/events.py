@@ -1,4 +1,4 @@
-from dook.events.services import ModelEventService
+from dook.core.events.services import ModelEventService
 
 
 class NewsEvents(ModelEventService):
