@@ -1,11 +1,11 @@
 from unittest import mock
 
 import pytest
+from assertpy import assert_that
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from assertpy import assert_that
 from dook.users.constants import (
     InvitationStatusType,
     InvitationUserRoleType,

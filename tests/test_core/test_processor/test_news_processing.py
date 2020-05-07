@@ -1,10 +1,8 @@
 import pytest
-
 from assertpy import assert_that
+
+from dook.core.processor.processor import NewsDraftProcessor
 from dook.news.models import News
-from dook.processor.duplicates.aggregators import DummyAggregator
-from dook.processor.duplicates.finders import DummyDuplicatesFinder
-from dook.processor.processor import NewsDraftProcessor
 from tests.factories.news import KeywordFactory, NewsFactory
 from tests.factories.processor import NewsDraftFactory
 from tests.factories.users import UserFactory
@@ -36,9 +34,7 @@ class TestNewsProcessing:
         keyword_1 = KeywordFactory(name="noel")
         keyword_2 = KeywordFactory(name="build")
 
-        drafts_processor = NewsDraftProcessor(
-            finder=DummyDuplicatesFinder(), aggregator=DummyAggregator(),
-        )
+        drafts_processor = NewsDraftProcessor()
 
         result = drafts_processor.get_keywords_out_of_text(default_news)
 
@@ -52,9 +48,7 @@ class TestNewsProcessing:
         for name in keywords:
             KeywordFactory(name=name)
 
-        drafts_processor = NewsDraftProcessor(
-            finder=DummyDuplicatesFinder(), aggregator=DummyAggregator(),
-        )
+        drafts_processor = NewsDraftProcessor()
 
         keywords_names = drafts_processor.get_keywords_out_of_text(default_news)
 
@@ -68,7 +62,7 @@ class TestNewsProcessing:
 
     @pytest.mark.django_db
     def test_materialize_news_with_sensitive_keywords(self, default_draft_news):
-        fact_checkers = UserFactory.create_batch(10)
+        UserFactory.create_batch(10)
         KeywordFactory(name="method")
         KeywordFactory(name="keycap")
 
@@ -78,9 +72,7 @@ class TestNewsProcessing:
             comment="Simple comment, without any sensitive keywords.",
         )
 
-        drafts_processor = NewsDraftProcessor(
-            finder=DummyDuplicatesFinder(), aggregator=DummyAggregator(),
-        )
+        drafts_processor = NewsDraftProcessor()
 
         drafts_processor.assign_fact_checkers_to_materialized_news(draft_1)
         drafts_processor.assign_fact_checkers_to_materialized_news(draft_2)

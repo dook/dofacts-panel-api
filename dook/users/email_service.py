@@ -45,9 +45,7 @@ def send_registration_invitation_email(email, invite_url):
 
 
 def send_registration_confirmation_email(name, email):
-    REGISTRATION_CONFIRMATION_SUBJECT = (
-        "[DoFacts] Registration confirmation."
-    )
+    REGISTRATION_CONFIRMATION_SUBJECT = "[DoFacts] Registration confirmation."
     message = render_to_string("registration_confirmation_email.html", {"name": name},)
 
     email = EmailMessage(

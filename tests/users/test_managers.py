@@ -2,10 +2,10 @@ from datetime import timedelta
 from random import randint
 
 import pytest
+from assertpy import assert_that
 from django.test import override_settings
 from django.utils import timezone
 
-from assertpy import assert_that
 from dook.users.constants import UserRoleType
 from dook.users.managers import UserQuerySet
 from dook.users.models import User, UserNews

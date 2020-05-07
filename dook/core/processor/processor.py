@@ -6,10 +6,12 @@ from django.conf import settings
 from django.db import transaction
 from django.db.transaction import atomic
 
+from dook.core.processor.errors import (
+    NEWS_DRAFT_PROCESSING_WITH_UNHANDLED_EXCEPTION_ERROR,
+    NOTIFICATION_SENDING_FAILED_ERROR,
+)
+from dook.core.processor.models import NewsDraft
 from dook.news.models import News, NewsSensitiveKeyword, SensitiveKeyword
-from dook.processor.duplicates.aggregators import NewsDuplicatesAggregator
-from dook.processor.duplicates.finders import NewsDuplicatesFinder
-from dook.processor.models import NewsDraft
 from dook.users import email_service
 from dook.users.models import User, UserNews
 
@@ -23,18 +25,14 @@ class ProcessorBase:
             try:
                 email_service.send_multiple_assignment_notifications(checkers, news)
             except AnymailError as e:
-                self.logger.warning(f"Sending notifications failed with exception: {e}")
+                self.logger.warning(NOTIFICATION_SENDING_FAILED_ERROR.format(e))
 
         return send_notifications
 
 
 class NewsDraftProcessor(ProcessorBase):
-    def __init__(
-        self, finder: NewsDuplicatesFinder, aggregator: NewsDuplicatesAggregator
-    ):
+    def __init__(self):
         super().__init__()
-        self.aggregator = aggregator
-        self.finder = finder
         self.fact_checkers = User.fact_checkers
         self.user_news = UserNews.objects
         self.drafts = NewsDraft.objects
@@ -55,7 +53,9 @@ class NewsDraftProcessor(ProcessorBase):
                 self.process_draft(news_draft)
             except Exception:
                 self.logger.exception(
-                    f"Processing of {news_draft} failed with unhandled exception"
+                    NEWS_DRAFT_PROCESSING_WITH_UNHANDLED_EXCEPTION_ERROR.format(
+                        news_draft
+                    )
                 )
 
     def next_batch(self):
@@ -73,12 +73,7 @@ class NewsDraftProcessor(ProcessorBase):
     @atomic
     def process_draft(self, news_draft):
         self.logger.info(f"Processing {news_draft}")
-        duplicates = self.finder.find_duplicates(news_draft)
-        if duplicates:
-            self.logger.info(f"Found {len(duplicates)} probable duplicates")
-            self.aggregator.group_duplicates(news_draft, duplicates)
-        else:
-            self.assign_fact_checkers_to_materialized_news(news_draft)
+        self.assign_fact_checkers_to_materialized_news(news_draft)
 
     def assign_fact_checkers_to_materialized_news(self, news_draft):
         checkers = self.get_checkers()
