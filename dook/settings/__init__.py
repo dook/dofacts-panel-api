@@ -17,6 +17,7 @@ import sys
 from corsheaders.defaults import default_headers
 from envparse import env
 
+from dook.settings.auth import *  # noqa
 from dook.settings.email import *  # noqa
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -24,10 +25,6 @@ BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 
 
 env.read_envfile()
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY", default="secret_key")
@@ -97,9 +94,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "dook.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": env(
@@ -134,36 +128,11 @@ REST_FRAMEWORK = {
 
 ATOMIC_REQUESTS = True
 
-# Password validation
-# https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
-
-AUTH_USER_MODEL = "users.User"
-
-AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",},
-    {"NAME": "dook.users.validators.UppercaseValidator",},
-    {"NAME": "dook.users.validators.LowercaseValidator",},
-    {"NAME": "dook.users.validators.SymbolValidator",},
-]
-
-PASSWORD_RESET_TIMEOUT_DAYS = 1
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/3.0/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 PUBLIC_ROOT = pathlib.Path(BASE_DIR, "public")
 
@@ -173,9 +142,7 @@ STATIC_ROOT = env("STATIC_ROOT", default=str(pathlib.Path(PUBLIC_ROOT, "static")
 MEDIA_URL = env("MEDIA_URL", default=str(pathlib.Path(PUBLIC_ROOT, "media")) + "/")
 STATIC_URL = env("STATIC_URL", default=str(pathlib.Path(PUBLIC_ROOT, "static")) + "/")
 
-INVITATION_EXPIRY = 7
 CORS_ORIGIN_ALLOW_ALL = env("CORS_ORIGIN_ALLOW_ALL", default=False, cast=bool)
-
 CORS_ALLOW_HEADERS = list(default_headers) + ["Cache-Control", "Pragma"]
 
 # fmt: off
@@ -215,6 +182,7 @@ LOGGING = {
 }
 # fmt: on
 
+INVITATION_EXPIRY = 7
 ASSIGNMENT_ACTIVITY_PERIOD_MINUTES = 60  # minutes
 TARGET_ASSIGNMENTS_PER_NEWS_COUNT = 4
 
