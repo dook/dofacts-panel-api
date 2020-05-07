@@ -17,6 +17,8 @@ import sys
 from corsheaders.defaults import default_headers
 from envparse import env
 
+from dook.settings.email import *  # noqa
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 
@@ -154,13 +156,9 @@ PASSWORD_RESET_TIMEOUT_DAYS = 1
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -174,20 +172,6 @@ STATIC_ROOT = env("STATIC_ROOT", default=str(pathlib.Path(PUBLIC_ROOT, "static")
 
 MEDIA_URL = env("MEDIA_URL", default=str(pathlib.Path(PUBLIC_ROOT, "media")) + "/")
 STATIC_URL = env("STATIC_URL", default=str(pathlib.Path(PUBLIC_ROOT, "static")) + "/")
-
-EMAIL_BACKEND = "anymail.backends.amazon_ses.EmailBackend"
-EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="sfnf@dook.pro")
-
-ANYMAIL = {
-    "AMAZON_SES_CLIENT_PARAMS": {
-        # example: override normal Boto credentials specifically for Anymail
-        "aws_access_key_id": env("AWS_ACCESS_KEY_ID", default=""),
-        "aws_secret_access_key": env("AWS_SECRET_ACCESS_KEY", default=""),
-        "region_name": env("REGION_NAME", default=""),
-        # override other default options
-        "config": {"connect_timeout": 30, "read_timeout": 30,},
-    },
-}
 
 INVITATION_EXPIRY = 7
 CORS_ORIGIN_ALLOW_ALL = env("CORS_ORIGIN_ALLOW_ALL", default=False, cast=bool)

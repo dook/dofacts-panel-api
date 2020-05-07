@@ -2,8 +2,6 @@ from django.conf import settings
 from django.core.mail import EmailMessage, get_connection
 from django.template.loader import render_to_string
 
-from dook.sfnf_panel.settings import EMAIL_HOST_USER
-
 
 def send_registration_confirm_email(url, user):
     REGISTRATION_CONFIRMATION_SUBJECT = "[DoFacts] Registration confirmation request."
@@ -12,7 +10,10 @@ def send_registration_confirm_email(url, user):
     )
 
     email = EmailMessage(
-        REGISTRATION_CONFIRMATION_SUBJECT, message, EMAIL_HOST_USER, to=[user.email]
+        REGISTRATION_CONFIRMATION_SUBJECT,
+        message,
+        settings.EMAIL_HOST_USER,
+        to=[user.email],
     )
     email.send()
     return check_email_status(email.anymail_status.status)
@@ -23,7 +24,7 @@ def send_account_confirmed_email(user):
     message = render_to_string("account_confirmed_email.html", {"user_name": user.name,},)
 
     email = EmailMessage(
-        ACCOUNT_CONFIRMATION_SUBJECT, message, EMAIL_HOST_USER, to=[user.email]
+        ACCOUNT_CONFIRMATION_SUBJECT, message, settings.EMAIL_HOST_USER, to=[user.email]
     )
     email.send()
     return check_email_status(email.anymail_status.status)
@@ -38,7 +39,7 @@ def send_registration_invitation_email(email, invite_url):
     )
 
     email = EmailMessage(
-        REGISTRATION_INVITATION_SUBJECT, message, EMAIL_HOST_USER, to=[email]
+        REGISTRATION_INVITATION_SUBJECT, message, settings.EMAIL_HOST_USER, to=[email]
     )
     email.send()
     return check_email_status(email.anymail_status.status)
@@ -49,7 +50,7 @@ def send_registration_confirmation_email(name, email):
     message = render_to_string("registration_confirmation_email.html", {"name": name},)
 
     email = EmailMessage(
-        REGISTRATION_CONFIRMATION_SUBJECT, message, EMAIL_HOST_USER, to=[email]
+        REGISTRATION_CONFIRMATION_SUBJECT, message, settings.EMAIL_HOST_USER, to=[email]
     )
     email.send()
     return check_email_status(email.anymail_status.status)
@@ -60,7 +61,9 @@ def send_password_reset_email(email, reset_url):
 
     message = render_to_string("password_reset_email.html", {"reset_url": reset_url,},)
 
-    email = EmailMessage(PASSWORD_RESET_SUBJECT, message, EMAIL_HOST_USER, to=[email])
+    email = EmailMessage(
+        PASSWORD_RESET_SUBJECT, message, settings.EMAIL_HOST_USER, to=[email]
+    )
     email.send()
     return check_email_status(email.anymail_status.status)
 
@@ -81,7 +84,10 @@ def assignment_notification_email_factory(user, news):
     message = render_to_string("assignment_notification_email.html", {"url": url},)
 
     return EmailMessage(
-        subject=SUBJECT, body=message, from_email=EMAIL_HOST_USER, to=[user.email]
+        subject=SUBJECT,
+        body=message,
+        from_email=settings.EMAIL_HOST_USER,
+        to=[user.email],
     )
 
 
@@ -107,6 +113,8 @@ def send_news_verified_notification(user_email, news_pk, verdict_type):
 
     message = render_to_string(EMAIL_TEMPLATES[verdict_type], {"news_url": url,},)
 
-    email = EmailMessage(NEWS_VERIFIED_SUBJECT, message, EMAIL_HOST_USER, to=[user_email])
+    email = EmailMessage(
+        NEWS_VERIFIED_SUBJECT, message, settings.EMAIL_HOST_USER, to=[user_email]
+    )
     email.send()
     return check_email_status(email.anymail_status.status)
