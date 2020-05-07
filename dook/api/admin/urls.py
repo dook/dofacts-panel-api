@@ -1,6 +1,6 @@
 from django.urls import path
 
-from dook.admin.views import (
+from dook.api.admin.views import (
     ExpertListView,
     FactCheckerListView,
     InvitationListView,

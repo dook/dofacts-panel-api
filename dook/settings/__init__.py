@@ -48,7 +48,6 @@ DJANGO_APPS = [
 LOCAL_APPS = [
     "dook.users",
     "dook.news",
-    "dook.admin",
     "dook.core.processor",
     "dook.events",
 ]

@@ -2,8 +2,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.filters import OrderingFilter, SearchFilter
 
-from dook.admin.permissions import IsAdmin
-from dook.admin.serializers import (
+from dook.api.admin.permissions import IsAdmin
+from dook.api.admin.serializers import (
     ExpertListSerializer,
     FactCheckerListSerializer,
     InvitationListSerializer,
