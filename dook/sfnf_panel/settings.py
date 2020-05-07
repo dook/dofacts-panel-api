@@ -38,25 +38,30 @@ ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
-
-INSTALLED_APPS = [
+DJANGO_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Local Apps
+]
+
+LOCAL_APPS = [
     "dook.users",
     "dook.news",
     "dook.admin",
-    "dook.processor",
+    "dook.core.processor",
     "dook.events",
-    # Third-Party Apps
+]
+
+THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
     "django_filters",
 ]
+
+INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -232,8 +237,4 @@ TARGET_ASSIGNMENTS_PER_NEWS_COUNT = 4
 PANEL_DOMAIN_NAME = env("DOMAIN_NAME", default="panel.app.fakehunter.pap.pl")
 
 # TODO: Add subscribers autodiscovery
-EVENTS = {
-    "news_new_verdict": [
-        "dook.users.events.NewsNewVerdictSubscriber",
-    ]
-}
+EVENTS = {"news_new_verdict": ["dook.users.events.NewsNewVerdictSubscriber",]}
