@@ -176,4 +176,4 @@ TARGET_ASSIGNMENTS_PER_NEWS_COUNT = 4
 PANEL_DOMAIN_NAME = env("DOMAIN_NAME", default="panel.app.fakehunter.pap.pl")
 
 # TODO: Add subscribers autodiscovery
-EVENTS = {"news_new_verdict": ["dook.users.events.NewsNewVerdictSubscriber",]}
+EVENTS = {}
