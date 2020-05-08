@@ -1,8 +1,8 @@
 import factory
 from django.utils import timezone
 
-from dook.users.constants import UserRoleType
-from dook.users.models import Invitation, User, UserNews
+from dook.core.users.constants import UserRoleType
+from dook.core.users.models import Invitation, User, UserNews
 
 
 class UserFactory(factory.DjangoModelFactory):

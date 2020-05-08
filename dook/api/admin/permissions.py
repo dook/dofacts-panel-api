@@ -1,6 +1,6 @@
 from rest_framework.permissions import BasePermission
 
-from dook.users.constants import UserRoleType
+from dook.core.users.constants import UserRoleType
 
 
 class IsFactChecker(BasePermission):

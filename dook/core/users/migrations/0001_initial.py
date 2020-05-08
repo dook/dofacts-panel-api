@@ -4,7 +4,7 @@ import uuid
 
 from django.db import migrations, models
 
-import dook.users.models
+import dook.core.users.models
 
 
 class Migration(migrations.Migration):
@@ -128,6 +128,6 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={"abstract": False,},
-            managers=[("objects", dook.users.models.UserManager()),],
+            managers=[("objects", dook.core.users.models.UserManager()), ],
         ),
     ]

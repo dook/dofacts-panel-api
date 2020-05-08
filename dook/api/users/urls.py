@@ -1,6 +1,6 @@
 from django.urls import path
 
-from dook.users.views import (
+from dook.api.users.views import (
     AcceptInviteView,
     ActivateAccountView,
     CreateInvitationView,

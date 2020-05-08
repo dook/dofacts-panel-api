@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from dook.core.news.constants import VerdictType
 from dook.core.news.models import ExpertOpinion, FactCheckerOpinion
-from dook.users.constants import UserRoleType
+from dook.core.users.constants import UserRoleType
 from tests.factories.news import FactCheckerOpinionFactory, NewsFactory
 from tests.factories.users import UserFactory, UserNewsFactory
 
@@ -27,7 +27,7 @@ class TestExpertNewsViewSet:
     @pytest.mark.django_db
     def test_create_expert_opinion(self, api_client, default_opinion_data):
         with mock.patch.multiple(
-            "dook.users.events", send_news_verified_notification=mock.DEFAULT
+            "dook.core.users.events", send_news_verified_notification=mock.DEFAULT
         ) as mocked:
             news = NewsFactory()
             user = UserFactory(role=UserRoleType.EXPERT)
@@ -55,7 +55,7 @@ class TestExpertNewsViewSet:
     @pytest.mark.django_db
     def test_already_verified_by_fcs(self, api_client, default_opinion_data):
         with mock.patch.multiple(
-            "dook.users.events", send_news_verified_notification=mock.DEFAULT
+            "dook.core.users.events", send_news_verified_notification=mock.DEFAULT
         ) as mocked:
             news = NewsFactory()
             user = UserFactory(role=UserRoleType.EXPERT)
@@ -89,7 +89,7 @@ class TestFactCheckerNewsViewSet:
     @pytest.mark.django_db
     def test_create_fc_opinion(self, api_client, default_opinion_data):
         with mock.patch.multiple(
-            "dook.users.events", send_news_verified_notification=mock.DEFAULT
+            "dook.core.users.events", send_news_verified_notification=mock.DEFAULT
         ) as mocked:
             news = NewsFactory()
             user_1 = UserFactory(role=UserRoleType.FACT_CHECKER)

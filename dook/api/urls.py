@@ -5,5 +5,5 @@ urlpatterns = [
     path("", lambda r: HttpResponse()),
     path(r"^admin/", include(("dook.api.admin.urls", "admin"), namespace="admin")),
     path(r"^api/", include(("dook.api.news.urls", "api"), namespace="api")),
-    path(r"^users/", include(("dook.users.urls", "users"), namespace="users")),
+    path(r"^users/", include(("dook.api.users.urls", "users"), namespace="users")),
 ]

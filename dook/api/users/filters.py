@@ -1,7 +1,7 @@
 from django_filters.rest_framework import FilterSet, filters
 
-from dook.users.constants import UserSpecializationType
-from dook.users.models import User
+from dook.core.users.constants import UserSpecializationType
+from dook.core.users.models import User
 
 
 class AdminUsersFilter(FilterSet):

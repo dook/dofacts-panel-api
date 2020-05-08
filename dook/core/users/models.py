@@ -7,19 +7,18 @@ from django.db import models
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
-from dook.users.constants import (
+from dook.core.users.constants import (
     InvitationStatusType,
     InvitationUserRoleType,
     UserRoleType,
     UserSpecializationType,
 )
-from dook.users.email_service import send_registration_invitation_email
-from dook.users.exceptions import (
+from dook.core.users.email_service import send_registration_invitation_email
+from dook.core.users.exceptions import (
     InvitationAlreadyExistException,
     UserAlreadyExistException,
-    UserDoesNotExistException,
 )
-from dook.users.managers import FactCheckersManager, UserManager, UserNewsManager
+from dook.core.users.managers import FactCheckersManager, UserManager, UserNewsManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):

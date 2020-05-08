@@ -12,8 +12,8 @@ from dook.core.processor.errors import (
     NOTIFICATION_SENDING_FAILED_ERROR,
 )
 from dook.core.processor.models import NewsDraft
-from dook.users import email_service
-from dook.users.models import User, UserNews
+from dook.core.users import email_service
+from dook.core.users.models import User, UserNews
 
 
 class ProcessorBase:

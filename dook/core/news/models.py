@@ -8,8 +8,8 @@ from dook.core.events.mixins import ModelEventMixin
 from dook.core.news.constants import VerdictType
 from dook.core.news.events import NewsEvents
 from dook.core.news.managers import NewsManager, NewsSensitiveKeywordsManager
-from dook.users.constants import UserRoleType
-from dook.users.models import User
+from dook.core.users.constants import UserRoleType
+from dook.core.users.models import User
 
 
 class News(ModelEventMixin, models.Model):

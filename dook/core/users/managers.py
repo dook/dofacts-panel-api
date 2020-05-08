@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.functions import Now
 
-from dook.users.constants import UserRoleType, UserSpecializationType
+from dook.core.users.constants import UserRoleType, UserSpecializationType
 
 ACTIVE_ASSIGNMENTS_BOUNDARY_EXPR = (
     Now()

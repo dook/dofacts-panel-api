@@ -4,7 +4,7 @@ from django.contrib.auth.password_validation import get_default_password_validat
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 
-from dook.users.exceptions import PasswordTooWeakException
+from dook.core.users.exceptions import PasswordTooWeakException
 
 
 class UppercaseValidator(object):

@@ -7,7 +7,7 @@ from dook.core.news.models import (
     News,
     SensitiveKeyword,
 )
-from dook.users.models import Invitation, User
+from dook.core.users.models import Invitation, User
 
 
 class UserDetailSerializer(serializers.ModelSerializer):

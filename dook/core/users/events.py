@@ -3,8 +3,8 @@ import logging
 from anymail.exceptions import AnymailAPIError
 from django.core.exceptions import ObjectDoesNotExist
 
-from dook.users.email_service import send_news_verified_notification
-from dook.users.exceptions import InternalEmailErrorException
+from dook.core.users.email_service import send_news_verified_notification
+from dook.core.users.exceptions import InternalEmailErrorException
 
 
 class NewsNewVerdictSubscriber:

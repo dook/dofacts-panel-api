@@ -9,7 +9,7 @@ from dook.core.news.models import (
     OpinionBase,
     SensitiveKeyword,
 )
-from dook.users.constants import UserRoleType
+from dook.core.users.constants import UserRoleType
 from tests.factories.users import UserFactory
 
 

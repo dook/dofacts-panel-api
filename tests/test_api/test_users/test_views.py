@@ -6,13 +6,8 @@ from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
-from dook.users.constants import (
-    InvitationStatusType,
-    InvitationUserRoleType,
-    UserRoleType,
-)
-from dook.users.models import User
-from dook.users.tokens import password_reset_token_generator
+from dook.core.users.models import User
+from dook.core.users.tokens import password_reset_token_generator
 from tests.factories.users import UserFactory
 
 
@@ -20,7 +15,7 @@ class TestPasswordResetRequestView:
     @pytest.mark.django_db
     def test_success_request(self, api_client):
         with mock.patch.multiple(
-            "dook.users.views", send_password_reset_email=mock.DEFAULT
+            "dook.api.users.views", send_password_reset_email=mock.DEFAULT
         ) as mocked:
             mocked["send_password_reset_email"].return_value = True
             user = UserFactory(email="test@dook.pro")
@@ -38,7 +33,7 @@ class TestPasswordResetRequestView:
     @pytest.mark.django_db
     def test_request_invalid_email(self, api_client):
         with mock.patch.multiple(
-            "dook.users.views", send_password_reset_email=mock.DEFAULT
+            "dook.api.users.views", send_password_reset_email=mock.DEFAULT
         ) as mocked:
             url = reverse(f"users:password_reset_request")
             response = api_client.post(url, {"email": "some@email.com"}, format="json")

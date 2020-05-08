@@ -14,9 +14,9 @@ from django.db.models import (
     When,
 )
 
-from dook.users.constants import UserRoleType
-from dook.users.managers import ACTIVE_ASSIGNMENTS_BOUNDARY_EXPR
-from dook.users.models import UserNews
+from dook.core.users.constants import UserRoleType
+from dook.core.users.managers import ACTIVE_ASSIGNMENTS_BOUNDARY_EXPR
+from dook.core.users.models import UserNews
 
 
 class NewsQuerySet(models.QuerySet):

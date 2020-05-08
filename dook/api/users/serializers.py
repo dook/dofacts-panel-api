@@ -2,15 +2,14 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.authentication import authenticate
 
-from dook.users.exceptions import (
+from dook.core.users.exceptions import (
     EmailNotVerifiedException,
     InactiveAccountException,
     InvalidCredentialsException,
     PasswordConfirmationFailedException,
-    PasswordTooWeakException,
 )
-from dook.users.models import Invitation, User
-from dook.users.validators import validate_password
+from dook.core.users.models import Invitation, User
+from dook.core.users.validators import validate_password
 
 
 class RegistrationSerializer(serializers.ModelSerializer):

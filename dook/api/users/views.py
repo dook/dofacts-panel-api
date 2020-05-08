@@ -10,24 +10,7 @@ from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
-from dook.users.constants import InvitationStatusType
-from dook.users.email_service import (
-    send_account_confirmed_email,
-    send_password_reset_email,
-    send_registration_confirmation_email,
-)
-from dook.users.exceptions import (
-    EmailAlreadyConfirmedException,
-    InternalEmailErrorException,
-    InternalSignUpErrorException,
-    InvalidActivationUrlException,
-    InvalidInviteTokenException,
-    InvalidPasswordException,
-    TokenAlreadyExpiredException,
-    TokenAlreadyUsedException,
-)
-from dook.users.models import Invitation, User
-from dook.users.serializers import (
+from dook.api.users.serializers import (
     AuthTokenSerializer,
     InternalPasswordResetSerializer,
     PasswordResetRequestSerializer,
@@ -35,7 +18,22 @@ from dook.users.serializers import (
     RegistrationInvitationSerializer,
     RegistrationSerializer,
 )
-from dook.users.tokens import (
+from dook.core.users.constants import InvitationStatusType
+from dook.core.users.email_service import (
+    send_account_confirmed_email,
+    send_password_reset_email,
+    send_registration_confirmation_email,
+)
+from dook.core.users.exceptions import (
+    InternalEmailErrorException,
+    InternalSignUpErrorException,
+    InvalidInviteTokenException,
+    InvalidPasswordException,
+    TokenAlreadyExpiredException,
+    TokenAlreadyUsedException,
+)
+from dook.core.users.models import Invitation, User
+from dook.core.users.tokens import (
     account_activation_token_generator,
     get_user_from_uid,
     password_reset_token_generator,
