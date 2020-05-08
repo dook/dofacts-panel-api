@@ -3,8 +3,8 @@ import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from dook.core.news.models import News
 from dook.core.processor.managers import NewsDraftManager
-from dook.news.models import News
 
 
 class ProcessingResult(models.TextChoices):

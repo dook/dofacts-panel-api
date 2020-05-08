@@ -13,8 +13,8 @@ from dook.api.admin.serializers import (
     SensitiveKeywordManagementSerializer,
     UserDetailSerializer,
 )
-from dook.news.api.filters import AdminNewsFilter
-from dook.news.models import News, SensitiveKeyword
+from dook.api.news.filters import AdminNewsFilter
+from dook.core.news.models import News, SensitiveKeyword
 from dook.users.filters import AdminUsersFilter
 from dook.users.models import Invitation, User
 

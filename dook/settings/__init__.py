@@ -35,7 +35,7 @@ DJANGO_APPS = [
 
 LOCAL_APPS = [
     "dook.users",
-    "dook.news",
+    "dook.core.news",
     "dook.core.processor",
     "dook.core.events",
 ]
@@ -60,7 +60,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "dook.urls"
+ROOT_URLCONF = "dook.api.urls"
 
 TEMPLATES = [
     {
@@ -176,4 +176,4 @@ TARGET_ASSIGNMENTS_PER_NEWS_COUNT = 4
 PANEL_DOMAIN_NAME = env("DOMAIN_NAME", default="panel.app.fakehunter.pap.pl")
 
 # TODO: Add subscribers autodiscovery
-EVENTS = {}
+EVENTS = {"news_new_verdict": ["dook.users.events.NewsNewVerdictSubscriber"]}

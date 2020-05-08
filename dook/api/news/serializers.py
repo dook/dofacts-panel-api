@@ -1,13 +1,12 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from dook.news.constants import VerdictType
-from dook.news.models import (
+from dook.core.news.constants import VerdictType
+from dook.core.news.models import (
     ExpertOpinion,
     FactCheckerOpinion,
     News,
     NewsSensitiveKeyword,
-    OpinionBase,
 )
 
 

@@ -6,12 +6,12 @@ from django.conf import settings
 from django.db import transaction
 from django.db.transaction import atomic
 
+from dook.core.news.models import News, NewsSensitiveKeyword, SensitiveKeyword
 from dook.core.processor.errors import (
     NEWS_DRAFT_PROCESSING_WITH_UNHANDLED_EXCEPTION_ERROR,
     NOTIFICATION_SENDING_FAILED_ERROR,
 )
 from dook.core.processor.models import NewsDraft
-from dook.news.models import News, NewsSensitiveKeyword, SensitiveKeyword
 from dook.users import email_service
 from dook.users.models import User, UserNews
 

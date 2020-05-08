@@ -1,17 +1,9 @@
-from django.urls import include, re_path
-from rest_framework import routers
+from django.http import HttpResponse
+from django.urls import include, path
 
-from dook.news.api.views import (
-    ExpertNewsViewSet,
-    FactCheckerNewsViewSet,
-    NewsVerifiedViewSet,
-)
-
-router = routers.DefaultRouter()
-
-router.register(r"fact_checker/news", FactCheckerNewsViewSet, basename="fc-news")
-router.register(r"expert/news", ExpertNewsViewSet, basename="expert-news")
-
-router.register(r"news_verified", NewsVerifiedViewSet, basename="news-verified")
-
-url_patterns = [re_path("", include(router.urls))]
+urlpatterns = [
+    path("", lambda r: HttpResponse()),
+    path(r"^admin/", include(("dook.api.admin.urls", "admin"), namespace="admin")),
+    path(r"^api/", include(("dook.api.news.urls", "api"), namespace="api")),
+    path(r"^users/", include(("dook.users.urls", "users"), namespace="users")),
+]

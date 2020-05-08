@@ -1,7 +1,12 @@
 from rest_framework import serializers
 
-from dook.news.api.serializers import SensitiveKeywordSerializer
-from dook.news.models import ExpertOpinion, FactCheckerOpinion, News, SensitiveKeyword
+from dook.api.news.serializers import SensitiveKeywordSerializer
+from dook.core.news.models import (
+    ExpertOpinion,
+    FactCheckerOpinion,
+    News,
+    SensitiveKeyword,
+)
 from dook.users.models import Invitation, User
 
 
@@ -66,6 +71,7 @@ class FactCheckerOpinionExtendedSerializer(serializers.ModelSerializer):
     class Meta:
         model = FactCheckerOpinion
         fields = (
+            "id",
             "title",
             "about_corona_virus",
             "confirmation_sources",

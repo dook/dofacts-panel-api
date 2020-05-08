@@ -1,26 +1,28 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_201_CREATED
 from rest_framework.viewsets import GenericViewSet
 
 from dook.api.admin.permissions import IsExpert, IsFactChecker
-from dook.news.api.filters import (
+from dook.api.news.errors import MULTIPLE_OPINIONS_FROM_ONE_USER_FOR_ONE_NEWS_ERROR
+from dook.api.news.filters import (
     ExpertNewsFilter,
     FactCheckerNewsFilter,
     NewsVerifiedFilter,
 )
-from dook.news.api.serializers import (
+from dook.api.news.serializers import (
     ExpertNewsSerializer,
     ExpertOpinionSerializer,
     FactCheckerNewsSerializer,
     FactCheckerOpinionSerializer,
     NewsVerifiedSerializer,
 )
-from dook.news.models import News
+from dook.core.news.models import News
 
 
 class NewsViewSetBase(GenericViewSet, ListModelMixin, RetrieveModelMixin):
@@ -30,7 +32,6 @@ class NewsViewSetBase(GenericViewSet, ListModelMixin, RetrieveModelMixin):
     serializer_action_class = {}
 
     def get_serializer_class(self):
-
         return self.serializer_action_class.get(self.action, self.serializer_class)
 
     @action(methods=["post"], detail=True, url_name="create_opinion")
@@ -45,10 +46,7 @@ class NewsViewSetBase(GenericViewSet, ListModelMixin, RetrieveModelMixin):
         )
 
         if not opinion:
-            return Response(
-                {"message": {"User can have only one opinion per one news"}},
-                status=HTTP_400_BAD_REQUEST,
-            )
+            raise ValidationError(MULTIPLE_OPINIONS_FROM_ONE_USER_FOR_ONE_NEWS_ERROR)
 
         if news_instance.is_with_verdict():
             news_instance.events.new_verdict()

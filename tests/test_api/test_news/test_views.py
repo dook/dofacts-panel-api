@@ -3,18 +3,10 @@ from unittest import mock
 import pytest
 from django.urls import reverse
 
-from dook.news.constants import VerdictType
-from dook.news.models import ExpertOpinion, FactCheckerOpinion
-from dook.users.constants import (
-    InvitationStatusType,
-    InvitationUserRoleType,
-    UserRoleType,
-)
-from tests.factories.news import (
-    ExpertOpinionFactory,
-    FactCheckerOpinionFactory,
-    NewsFactory,
-)
+from dook.core.news.constants import VerdictType
+from dook.core.news.models import ExpertOpinion, FactCheckerOpinion
+from dook.users.constants import UserRoleType
+from tests.factories.news import FactCheckerOpinionFactory, NewsFactory
 from tests.factories.users import UserFactory, UserNewsFactory
 
 
@@ -109,7 +101,7 @@ class TestFactCheckerNewsViewSet:
             url = reverse("api:fc-news-create_opinion", kwargs={"id": news.pk})
 
             api_client.force_authenticate(user=user_1)
-            response = api_client.post(url, default_opinion_data, format="json")
+            api_client.post(url, default_opinion_data, format="json")
 
             fc_opinion = FactCheckerOpinion.objects.filter(
                 news=news, judge=user_1

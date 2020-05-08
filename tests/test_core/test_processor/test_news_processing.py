@@ -1,8 +1,8 @@
 import pytest
 from assertpy import assert_that
 
+from dook.core.news.models import News
 from dook.core.processor.processor import NewsDraftProcessor
-from dook.news.models import News
 from tests.factories.news import KeywordFactory, NewsFactory
 from tests.factories.processor import NewsDraftFactory
 from tests.factories.users import UserFactory

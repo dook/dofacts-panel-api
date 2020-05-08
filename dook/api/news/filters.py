@@ -1,6 +1,6 @@
 from django_filters.rest_framework import FilterSet, filters
 
-from dook.news.models import News
+from dook.core.news.models import News
 
 NEWS_CURRENT_VERDICT_CHOICES = (
     ("true", "Verified True"),

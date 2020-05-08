@@ -1,7 +1,7 @@
 import factory
 from django.utils import timezone
 
-from dook.news.models import (
+from dook.core.news.models import (
     ExpertOpinion,
     FactCheckerOpinion,
     News,
