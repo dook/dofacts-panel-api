@@ -3,7 +3,7 @@ from invoke import task
 LINE_LENGTH = "90"
 
 PATHS = ["dook", "tests"]
-EXCLUDE = ["*/migrations/*", "*/users/*"]
+EXCLUDE = ["*/migrations/*"]
 
 
 @task
