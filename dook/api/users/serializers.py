@@ -2,7 +2,7 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.authentication import authenticate
 
-from dook.core.users.exceptions import (
+from dook.api.users.exceptions import (
     EmailNotVerifiedException,
     InactiveAccountException,
     InvalidCredentialsException,

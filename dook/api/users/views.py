@@ -5,11 +5,23 @@ from django.db import transaction
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
+from rest_framework.authentication import authenticate
+from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 
+from dook.api.users.exceptions import (
+    EmailNotVerifiedException,
+    InternalEmailErrorException,
+    InternalSignUpErrorException,
+    InvalidCredentialsException,
+    InvalidInviteTokenException,
+    InvalidPasswordException,
+    TokenAlreadyExpiredException,
+    TokenAlreadyUsedException,
+)
 from dook.api.users.serializers import (
     AuthTokenSerializer,
     InternalPasswordResetSerializer,
@@ -20,24 +32,11 @@ from dook.api.users.serializers import (
 )
 from dook.core.users.constants import InvitationStatusType
 from dook.core.users.email_service import (
-    send_account_confirmed_email,
     send_password_reset_email,
     send_registration_confirmation_email,
 )
-from dook.core.users.exceptions import (
-    InternalEmailErrorException,
-    InternalSignUpErrorException,
-    InvalidInviteTokenException,
-    InvalidPasswordException,
-    TokenAlreadyExpiredException,
-    TokenAlreadyUsedException,
-)
 from dook.core.users.models import Invitation, User
-from dook.core.users.tokens import (
-    account_activation_token_generator,
-    get_user_from_uid,
-    password_reset_token_generator,
-)
+from dook.core.users.tokens import get_user_from_uid, password_reset_token_generator
 
 
 class SignUpView(generics.CreateAPIView):
@@ -98,22 +97,26 @@ class CreateTokenView(ObtainAuthToken):
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
     permission_classes = (permissions.AllowAny,)
 
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(
+            data=request.data, context={"request": request}
+        )
+        serializer.is_valid(raise_exception=True)
+        user = self.get_user_if_valid(serializer.validated_data)
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({"token": token.key})
 
-class ActivateAccountView(APIView):
-    permission_classes = (permissions.AllowAny,)
+    def get_user_if_valid(self, data):
+        email = data["email"].lower()
+        password = data["password"]
+        user = authenticate(email=email, password=password)
 
-    def get(self, request, uidb64, token):
-        account_activation_token_generator.validate_token(uidb64, token)
-
-        user.is_active = True
-        user.is_verified = True
-        user.save()
-
-        if send_account_confirmed_email(user):
-            pass
+        if not user:
+            raise InvalidCredentialsException
+        elif user.is_verified is False:
+            raise EmailNotVerifiedException
         else:
-            raise InternalEmailErrorException
-        return Response("Your account has been confirmed.")
+            return user
 
 
 class CreateInvitationView(generics.CreateAPIView):

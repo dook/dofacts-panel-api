@@ -20,10 +20,10 @@ class UserSpecializationType(models.TextChoices):
 
 
 class InvitationStatusType(models.TextChoices):
-    FAILED = "Błąd wysyłki", _("FAILED")
-    WAITING = "Oczekujące", _("WAITING")
-    IN_PROGRESS = "W trakcie", _("IN_PROGRESS")
-    USED = "Wykorzystane", _("USED")
+    FAILED = "Failed", _("FAILED")
+    WAITING = "Waiting", _("WAITING")
+    IN_PROGRESS = "In progress", _("IN_PROGRESS")
+    USED = "Used", _("USED")
 
 
 class InvitationUserRoleType(models.TextChoices):

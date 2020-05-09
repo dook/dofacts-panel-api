@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.db.models.functions import Now
 
 from dook.core.users.constants import UserRoleType, UserSpecializationType
+from dook.core.users.errors import MISSING_EMAIL_ERROR, MISSING_USER_NAME_ERROR
 
 ACTIVE_ASSIGNMENTS_BOUNDARY_EXPR = (
     Now()
@@ -52,9 +53,9 @@ class UserQuerySet(models.QuerySet):
 class UserManagerBase(BaseUserManager):
     def create_user(self, email, name, password, specialization=None, role=None):
         if not email:
-            raise ValueError("Proszę podać email.")
+            raise ValueError(MISSING_EMAIL_ERROR)
         if not name:
-            raise ValueError("Proszę podać nazwę użytkownika.")
+            raise ValueError(MISSING_USER_NAME_ERROR)
 
         email = email.lower()
         user = self.model(

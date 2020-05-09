@@ -4,7 +4,7 @@ from django.contrib.auth.password_validation import get_default_password_validat
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext as _
 
-from dook.core.users.exceptions import PasswordTooWeakException
+from dook.api.users.exceptions import PasswordTooWeakException
 
 
 class UppercaseValidator(object):
@@ -36,7 +36,7 @@ class SymbolValidator(object):
         if not re.findall("[()[\]{}|\\`~!@#$%^&*_\-+=;:'\",<>./?]", password):
             raise ValidationError(
                 _(
-                    "Twoje hasło musi zawierać przynajmniej 1 symbol: "
+                    "Password must contain at lest one special character: "
                     + "()[]{}|\`~!@#$%^&*_-+=;:'\",<>./?"
                 ),
                 code="password_no_symbol",
