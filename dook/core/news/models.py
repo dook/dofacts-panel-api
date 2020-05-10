@@ -1,11 +1,22 @@
 import uuid
 from collections import Counter
 
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import IntegrityError, models
+from django.db.models import NOT_PROVIDED
 
+from dook.api.news.exceptions import (
+    MissingFieldsException,
+    RedundantFieldsException,
+    UserOpinionUniqueException,
+)
 from dook.core.events.mixins import ModelEventMixin
-from dook.core.news.constants import VerdictType
+from dook.core.news.constants import (
+    DUPLICATE_REQUIRED_FIELDS,
+    OPINION_FIELDS,
+    VERDICT_REQUIRED_FIELDS,
+    VerdictType,
+)
 from dook.core.news.events import NewsEvents
 from dook.core.news.managers import NewsManager, NewsSensitiveKeywordsManager
 from dook.core.users.constants import UserRoleType
@@ -71,22 +82,19 @@ class News(ModelEventMixin, models.Model):
         opinion_model = whose_opinion[user.role]
 
         try:
-            opinion, created = opinion_model.objects.get_or_create(
-                news=self, judge=user, defaults=opinion_params
+            opinion = opinion_model.objects.create(
+                news=self, judge=user, **opinion_params
             )
-            if created:
-                opinion.save()
-
-                return opinion
-
-        except IntegrityError:
-
-            return None
+        except (ValidationError, IntegrityError):
+            raise UserOpinionUniqueException
+        else:
+            return opinion
 
 
 class OpinionBase(models.Model):
     """
-    OpinionBase model is a system base representation of opinion for an corresponding News instance.
+    OpinionBase model is a system base representation of opinion for
+    corresponding News instance.
     """
 
     judge = models.ForeignKey(
@@ -96,14 +104,12 @@ class OpinionBase(models.Model):
         related_query_name="%(class)s",
     )
     verdict = models.CharField(
-        max_length=50,
-        choices=VerdictType.choices,
-        default=VerdictType.CANNOT_BE_VERIFIED,
+        max_length=50, choices=VerdictType.choices, blank=True, default="",
     )
 
-    title = models.TextField(blank=False)
-    comment = models.TextField(blank=True)
-    confirmation_sources = models.TextField(blank=True)
+    title = models.TextField(blank=True, default="")
+    comment = models.TextField(blank=True, default="")
+    confirmation_sources = models.TextField(blank=True, default="")
     about_corona_virus = models.BooleanField(default=True)
     is_duplicate = models.BooleanField(default=False)
     duplicate_reference = models.UUIDField(blank=True, null=True)
@@ -113,10 +119,56 @@ class OpinionBase(models.Model):
         abstract = True
         unique_together = ["news", "judge"]
 
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
+
+    def clean(self):
+        if self.verdict == VerdictType.SPAM:
+            self.check_fields_set({"verdict"})
+            self.about_corona_virus = False
+        elif self.is_duplicate is True:
+            self.check_fields_set(DUPLICATE_REQUIRED_FIELDS)
+        else:
+            self.check_fields_set(VERDICT_REQUIRED_FIELDS)
+
+    def reset_fields_values(self, exclude_fields):
+        fields_to_reset = OPINION_FIELDS.difference(exclude_fields)
+        for field in fields_to_reset:
+            default_value = self._meta.get_field(field).default
+            if default_value != NOT_PROVIDED:
+                setattr(self, field, default_value)
+            else:
+                setattr(self, field, None)
+
+    def check_fields_set(self, fields):
+        missing_fields = []
+        redundant_fields = []
+
+        # Check for missing fields
+        for field in fields:
+            value = getattr(self, field)
+            if value is None or value == "":
+                missing_fields.append(field)
+
+        # Check for redundant fields
+        for field in OPINION_FIELDS.difference(fields):
+            default_value = self._meta.get_field(field).default
+            value = getattr(self, field)
+            if value != default_value and value is not None:
+                redundant_fields.append(field)
+
+        if missing_fields:
+            raise MissingFieldsException(missing_fields=missing_fields)
+
+        if redundant_fields:
+            raise RedundantFieldsException(redundant_fields=redundant_fields)
+
 
 class FactCheckerOpinion(OpinionBase):
     """
-    FastCheckerOpinion model is case specific for opinion judged by user with FastChecker role in the system.
+    FastCheckerOpinion model is case specific for opinion judged by user
+    with FastChecker role in the system.
     """
 
     news = models.ForeignKey(
@@ -132,7 +184,8 @@ class FactCheckerOpinion(OpinionBase):
 
 class ExpertOpinion(OpinionBase):
     """
-    ExpertOpinion model is case specific for opinion judged by user with Expert role in the system.
+    ExpertOpinion model is case specific for opinion judged by user
+    with Expert role in the system.
     """
 
     news = models.OneToOneField(News, on_delete=models.CASCADE, primary_key=False,)

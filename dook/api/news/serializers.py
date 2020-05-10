@@ -1,7 +1,5 @@
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
-from dook.core.news.constants import VerdictType
 from dook.core.news.models import (
     ExpertOpinion,
     FactCheckerOpinion,
@@ -16,14 +14,6 @@ class ExpertOpinionSerializer(serializers.ModelSerializer):
     opinions both for expert opinion case and as inheritance for fact checker.
     """
 
-    title = serializers.CharField(required=False)
-    about_corona_virus = serializers.BooleanField(required=False)
-    confirmation_sources = serializers.CharField(required=False)
-    verdict = serializers.ChoiceField(choices=VerdictType.choices, required=False)
-    comment = serializers.CharField(required=False)
-    is_duplicate = serializers.BooleanField(required=False)
-    duplicate_reference = serializers.UUIDField(required=False)
-
     class Meta:
         model = ExpertOpinion
         fields = (
@@ -35,42 +25,6 @@ class ExpertOpinionSerializer(serializers.ModelSerializer):
             "is_duplicate",
             "duplicate_reference",
         )
-
-    def validate(self, data):
-        """
-        Validation is split into two main options:
-        "verdict": "spam" <- incoming POST request should contain just this parameter.
-        "is_duplicate": Boolean <- depending on "is_duplicate" value required_fields provides
-            set of parameters that proper request should include.
-        """
-
-        required_fields = {
-            True: {"is_duplicate", "duplicate_reference"},
-            False: {
-                "title",
-                "about_corona_virus",
-                "confirmation_sources",
-                "verdict",
-                "comment",
-                "is_duplicate",
-            },
-        }
-
-        verdict = data.get("verdict", "unidentified")
-        if verdict == "spam":
-            if len(data.keys()) != 1:
-                raise ValidationError(
-                    "Spam verdicts can not contain additional parameters"
-                )
-            return data
-
-        is_duplicate = data.get("is_duplicate", False)
-        difference = required_fields[is_duplicate].difference(set(data.keys()))
-        if difference:
-            raise ValidationError(
-                f"This request additionally requires { {*difference} } parameters"
-            )
-        return data
 
 
 class FactCheckerOpinionSerializer(ExpertOpinionSerializer):

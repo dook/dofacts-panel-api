@@ -1,6 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin
 from rest_framework.permissions import IsAuthenticated
@@ -9,7 +8,6 @@ from rest_framework.status import HTTP_201_CREATED
 from rest_framework.viewsets import GenericViewSet
 
 from dook.api.admin.permissions import IsExpert, IsFactChecker
-from dook.api.news.errors import MULTIPLE_OPINIONS_FROM_ONE_USER_FOR_ONE_NEWS_ERROR
 from dook.api.news.filters import (
     ExpertNewsFilter,
     FactCheckerNewsFilter,
@@ -26,8 +24,6 @@ from dook.core.news.models import News
 
 
 class NewsViewSetBase(GenericViewSet, ListModelMixin, RetrieveModelMixin):
-
-    model = News
     lookup_url_kwarg = "id"
     serializer_action_class = {}
 
@@ -44,9 +40,6 @@ class NewsViewSetBase(GenericViewSet, ListModelMixin, RetrieveModelMixin):
         opinion = news_instance.leave_opinion(
             user=self.request.user, opinion_params=serializer.validated_data
         )
-
-        if not opinion:
-            raise ValidationError(MULTIPLE_OPINIONS_FROM_ONE_USER_FOR_ONE_NEWS_ERROR)
 
         if news_instance.is_with_verdict():
             news_instance.events.new_verdict()
@@ -67,7 +60,7 @@ class ExpertNewsViewSet(NewsViewSetBase):
 
     def get_queryset(self):
         return (
-            self.model.objects.with_fact_checker_opinions()
+            News.objects.with_fact_checker_opinions()
             .with_expert_opinions()
             .with_verdicts()
             .with_is_duplicate()
@@ -88,7 +81,7 @@ class FactCheckerNewsViewSet(NewsViewSetBase):
 
     def get_queryset(self):
         return (
-            self.model.objects.for_user(self.request.user)
+            News.objects.for_user(self.request.user)
             .with_has_user_opinion(self.request.user)
             .with_assigned_at(self.request.user)
             .with_verdicts()
@@ -97,8 +90,6 @@ class FactCheckerNewsViewSet(NewsViewSetBase):
 
 
 class NewsVerifiedViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin):
-
-    model = News
     lookup_url_kwarg = "id"
     serializer_class = NewsVerifiedSerializer
     permission_classes = (IsAuthenticated,)
@@ -110,7 +101,7 @@ class NewsVerifiedViewSet(GenericViewSet, ListModelMixin, RetrieveModelMixin):
 
     def get_queryset(self):
         return (
-            self.model.objects.with_fact_checker_opinions()
+            News.objects.with_fact_checker_opinions()
             .with_expert_opinions()
             .with_assigned_to_me(self.request.user)
             .with_verdicts()
