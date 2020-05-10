@@ -18,3 +18,9 @@ assertpy
 freezegun
 autoflake
 Pillow
+
+# documentation
+Sphinx==3.0.3
+sphinx-rtd-theme==0.4.3
+sphinxcontrib-httpdomain==1.7.0
+sphinxcontrib-httpexample==0.10.3

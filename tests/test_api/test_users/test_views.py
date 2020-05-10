@@ -196,7 +196,7 @@ class TestCreateInvitationView:
                 email=default_invitation_data["email"]
             ).first()
 
-            assert response.status_code == 500
+            assert response.status_code == 503
 
             assert_that(invitation).is_none()
             assert_that(response.data["detail"].code).is_equal_to(
@@ -209,52 +209,6 @@ class TestCreateInvitationView:
         response = api_client.post(url, default_invitation_data)
 
         assert response.status_code == 401
-
-
-class TestAcceptInviteView:
-    @pytest.mark.django_db
-    def test_success_accept_invitation(self, api_client):
-        invitation = InvitationFactory()
-
-        url = reverse(f"users:accept_invite", kwargs={"token": invitation.token})
-        response = api_client.get(url)
-
-        invitation.refresh_from_db()
-        assert response.status_code == 200
-        assert_that(invitation.status).is_equal_to(InvitationStatusType.IN_PROGRESS)
-
-    @pytest.mark.django_db
-    def test_invalid_token(self, api_client):
-        url = reverse(f"users:accept_invite", kwargs={"token": uuid4()})
-        response = api_client.get(url)
-
-        assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert_that(response.data["detail"].code).is_equal_to(
-            InvalidInviteTokenException.default_code
-        )
-
-    @pytest.mark.django_db
-    @freeze_time("2020-04-12")
-    def test_expired_invitation(self, api_client):
-        invitation = InvitationFactory(sent_at=date.fromisoformat("2020-04-04"))
-        url = reverse(f"users:accept_invite", kwargs={"token": invitation.token})
-        response = api_client.get(url)
-
-        assert response.status_code == 400
-        assert_that(response.data["detail"].code).is_equal_to(
-            TokenExpiredException.default_code
-        )
-
-    @pytest.mark.django_db
-    def test_already_used_invitation(self, api_client):
-        invitation = InvitationFactory(status=InvitationStatusType.USED)
-        url = reverse(f"users:accept_invite", kwargs={"token": invitation.token})
-        response = api_client.get(url)
-
-        assert response.status_code == 400
-        assert_that(response.data["detail"].code).is_equal_to(
-            TokenAlreadyUsedException.default_code
-        )
 
 
 class TestPasswordResetRequestView:

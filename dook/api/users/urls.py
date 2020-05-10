@@ -1,7 +1,6 @@
 from django.urls import path
 
 from dook.api.users.views import (
-    AcceptInviteView,
     CreateInvitationView,
     CreateTokenView,
     InternalPasswordResetView,
@@ -15,7 +14,6 @@ urlpatterns = [
     path("sign-up/<token>", SignUpView.as_view(), name="sign_up"),
     path("login", CreateTokenView.as_view(), name="login"),
     path("send-invite", CreateInvitationView.as_view(), name="send_invite"),
-    path("accept-invite/<token>", AcceptInviteView.as_view(), name="accept_invite"),
     path("current-user", UserDetailView.as_view(), name="current_user"),
     path(
         "reset-password-request",

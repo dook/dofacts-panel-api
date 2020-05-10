@@ -10,7 +10,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
-from rest_framework.views import APIView
 
 from dook.api.users.exceptions import (
     EmailNotVerifiedException,
@@ -20,7 +19,6 @@ from dook.api.users.exceptions import (
     InvalidInviteTokenException,
     InvalidPasswordException,
     TokenAlreadyUsedException,
-    TokenExpiredException,
 )
 from dook.api.users.serializers import (
     AuthTokenSerializer,
@@ -148,27 +146,6 @@ class CreateInvitationView(generics.CreateAPIView):
                 raise InternalEmailErrorException
 
 
-class AcceptInviteView(APIView):
-    permission_classes = (permissions.AllowAny,)
-
-    def get(self, request, token):
-        self.validate_invitation(token)
-        return Response("Token validated successfully.", status=status.HTTP_200_OK)
-
-    def validate_invitation(self, token):
-        invitation = Invitation.objects.filter(token=token).first()
-
-        if not invitation:
-            raise InvalidInviteTokenException
-        elif invitation.status == InvitationStatusType.USED:
-            raise TokenAlreadyUsedException
-        elif invitation.key_expired():
-            raise TokenExpiredException
-        else:
-            invitation.status = InvitationStatusType.IN_PROGRESS
-            invitation.save()
-
-
 class UserDetailView(generics.RetrieveAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -192,7 +169,7 @@ class PasswordResetRequestView(generics.GenericAPIView):
             self.send_email(user)
 
         return Response(
-            "Check provided email address for further instructions.",
+            {"detail": "Check provided email address for further instructions."},
             status=status.HTTP_200_OK,
         )
 
@@ -225,7 +202,8 @@ class PasswordResetView(generics.GenericAPIView):
         self.change_password(user, serializer.validated_data)
 
         return Response(
-            "Your password has been reset successfully.", status=status.HTTP_200_OK
+            {"detail": "Your password has been reset successfully."},
+            status=status.HTTP_200_OK
         )
 
     def change_password(self, user, data):
@@ -245,7 +223,8 @@ class InternalPasswordResetView(generics.GenericAPIView):
         self.change_password(user, serializer.validated_data)
 
         return Response(
-            "Your password has been reset successfully.", status=status.HTTP_200_OK
+            {"detail": "Your password has been reset successfully."},
+            status=status.HTTP_200_OK
         )
 
     def change_password(self, user, data):

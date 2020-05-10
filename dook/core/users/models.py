@@ -74,7 +74,7 @@ class Invitation(models.Model):
     email = models.EmailField(
         unique=True,
         verbose_name=_("e-mail address"),
-        error_messages={"unique": "Zaproszenie z takim adresem email już istnieje."},
+        error_messages={"unique": "Invitation with given email already exists."},
     )
     status = models.CharField(
         max_length=30,
