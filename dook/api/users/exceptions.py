@@ -32,7 +32,7 @@ class InternalSignUpErrorException(exceptions.APIException):
     default_code = "sign_up_error"
 
 
-class TokenAlreadyExpiredException(exceptions.APIException):
+class TokenExpiredException(exceptions.APIException):
     status_code = status.HTTP_400_BAD_REQUEST
     default_detail = _("Activation link expired.")
     default_code = "token_expired"

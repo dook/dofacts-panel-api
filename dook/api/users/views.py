@@ -19,8 +19,8 @@ from dook.api.users.exceptions import (
     InvalidCredentialsException,
     InvalidInviteTokenException,
     InvalidPasswordException,
-    TokenAlreadyExpiredException,
     TokenAlreadyUsedException,
+    TokenExpiredException,
 )
 from dook.api.users.serializers import (
     AuthTokenSerializer,
@@ -60,7 +60,7 @@ class SignUpView(generics.CreateAPIView):
             raise InternalSignUpErrorException
         else:
             self.mark_invitation_as_used(invitation)
-            send_registration_confirmation_email(user.name, user.email)
+            send_registration_confirmation_email(name=user.name, email=user.email)
 
         serializer.validated_data.pop("password")
         serializer.validated_data.pop("password2")
@@ -153,7 +153,7 @@ class AcceptInviteView(APIView):
 
     def get(self, request, token):
         self.validate_invitation(token)
-        return Response("Invalid token.", status=status.HTTP_200_OK)
+        return Response("Token validated successfully.", status=status.HTTP_200_OK)
 
     def validate_invitation(self, token):
         invitation = Invitation.objects.filter(token=token).first()
@@ -163,9 +163,9 @@ class AcceptInviteView(APIView):
         elif invitation.status == InvitationStatusType.USED:
             raise TokenAlreadyUsedException
         elif invitation.key_expired():
-            raise TokenAlreadyExpiredException
+            raise TokenExpiredException
         else:
-            invitation.status == InvitationStatusType.IN_PROGRESS
+            invitation.status = InvitationStatusType.IN_PROGRESS
             invitation.save()
 
 

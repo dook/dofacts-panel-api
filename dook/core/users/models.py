@@ -109,7 +109,7 @@ class Invitation(models.Model):
 
     def send_invitation(self, request):
         invite_url = f"https://{settings.PANEL_DOMAIN_NAME}/register/{self.token}"
-        return send_registration_invitation_email(self.email, invite_url)
+        return send_registration_invitation_email(email=self.email, invite_url=invite_url)
 
     @staticmethod
     def check_if_already_exist(email):
