@@ -73,14 +73,14 @@ class ExpertOpinionFactory(OpinionBaseFactory):
     judge = factory.SubFactory(UserFactory, role=UserRoleType.EXPERT)
 
 
-class KeywordFactory(factory.DjangoModelFactory):
+class SensitiveKeywordFactory(factory.DjangoModelFactory):
     class Meta:
         model = SensitiveKeyword
 
-    name = factory.Faker("sentence")
+    name = factory.sequence(lambda x: f"name_{x}")
 
 
-class NewsKeywordFactory(factory.DjangoModelFactory):
+class NewsSensitiveKeywordFactory(factory.DjangoModelFactory):
     class Meta:
         model = NewsSensitiveKeyword
 

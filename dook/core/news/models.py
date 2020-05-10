@@ -11,6 +11,7 @@ from dook.api.news.exceptions import (
     UserOpinionUniqueException,
 )
 from dook.core.events.mixins import ModelEventMixin
+from dook.core.integrations.storage.client import S3ApiClient
 from dook.core.news.constants import (
     DUPLICATE_REQUIRED_FIELDS,
     OPINION_FIELDS,
@@ -89,6 +90,16 @@ class News(ModelEventMixin, models.Model):
             raise UserOpinionUniqueException
         else:
             return opinion
+
+    def attach_screenshot(self, image):
+        s3_client = S3ApiClient()
+
+        filename = s3_client.generate_filename(type="image")
+        s3_client.upload_image(image_object=image, filename=filename)
+        image_url = s3_client.get_object_url(object_name=filename)
+
+        self.screenshot_url = image_url
+        self.save()
 
 
 class OpinionBase(models.Model):

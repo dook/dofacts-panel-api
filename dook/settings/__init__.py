@@ -7,6 +7,7 @@ from envparse import env
 
 from dook.settings.auth import *  # noqa
 from dook.settings.email import *  # noqa
+from dook.settings.storage import *  # noqa
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
@@ -134,6 +135,9 @@ STATIC_URL = env("STATIC_URL", default=str(pathlib.Path(PUBLIC_ROOT, "static")) 
 
 CORS_ORIGIN_ALLOW_ALL = env("CORS_ORIGIN_ALLOW_ALL", default=False, cast=bool)
 CORS_ALLOW_HEADERS = list(default_headers) + ["Cache-Control", "Pragma"]
+
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID", default="")
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY", default="")
 
 # fmt: off
 LOGGING = {

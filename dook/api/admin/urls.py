@@ -2,9 +2,12 @@ from django.urls import path
 
 from dook.api.admin.views import (
     ExpertListView,
+    ExpertOpinionDetailView,
     FactCheckerListView,
+    FactCheckerOpinionDetailView,
     InvitationListView,
     NewsDetailView,
+    NewsImageView,
     NewsListView,
     SensitiveKeywordDetailView,
     SensitiveKeywordListView,
@@ -22,4 +25,15 @@ urlpatterns = [
         "keywords/<uuid:pk>", SensitiveKeywordDetailView.as_view(), name="keywords-detail"
     ),
     path("keywords", SensitiveKeywordListView.as_view(), name="keywords-list"),
+    path(
+        "expert-opinion/<int:pk>",
+        ExpertOpinionDetailView.as_view(),
+        name="expert-opinion-detail",
+    ),
+    path(
+        "fact-checker-opinion/<int:pk>",
+        FactCheckerOpinionDetailView.as_view(),
+        name="fact-checker-opinion-detail",
+    ),
+    path("news-image/<uuid:pk>", NewsImageView.as_view(), name="news-image"),
 ]

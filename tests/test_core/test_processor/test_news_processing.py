@@ -3,7 +3,7 @@ from assertpy import assert_that
 
 from dook.core.news.models import News
 from dook.core.processor.processor import NewsDraftProcessor
-from tests.factories.news import KeywordFactory, NewsFactory
+from tests.factories.news import NewsFactory, SensitiveKeywordFactory
 from tests.factories.processor import NewsDraftFactory
 from tests.factories.users import UserFactory
 
@@ -31,8 +31,8 @@ class TestNewsProcessing:
 
     @pytest.mark.django_db
     def test_get_keywords_out_of_text(self, default_news):
-        keyword_1 = KeywordFactory(name="noel")
-        keyword_2 = KeywordFactory(name="build")
+        keyword_1 = SensitiveKeywordFactory(name="noel")
+        keyword_2 = SensitiveKeywordFactory(name="build")
 
         drafts_processor = NewsDraftProcessor()
 
@@ -42,11 +42,11 @@ class TestNewsProcessing:
 
     @pytest.mark.django_db
     def test_assign_keywords_to_news(self, default_news):
-        KeywordFactory(name="fake")
+        SensitiveKeywordFactory(name="fake")
 
         keywords = ["method", "theme", "keyboard", "build"]
         for name in keywords:
-            KeywordFactory(name=name)
+            SensitiveKeywordFactory(name=name)
 
         drafts_processor = NewsDraftProcessor()
 
@@ -63,8 +63,8 @@ class TestNewsProcessing:
     @pytest.mark.django_db
     def test_materialize_news_with_sensitive_keywords(self, default_draft_news):
         UserFactory.create_batch(10)
-        KeywordFactory(name="method")
-        KeywordFactory(name="keycap")
+        SensitiveKeywordFactory(name="method")
+        SensitiveKeywordFactory(name="keycap")
 
         draft_1 = NewsDraftFactory(text=self.NEWS_TEXT, comment=self.NEWS_COMMENT)
         draft_2 = NewsDraftFactory(

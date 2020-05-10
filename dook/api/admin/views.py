@@ -1,13 +1,17 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.response import Response
 
 from dook.api.admin.permissions import IsAdmin
 from dook.api.admin.serializers import (
     ExpertListSerializer,
+    ExpertOpinionExtendedSerializer,
     FactCheckerListSerializer,
+    FactCheckerOpinionExtendedSerializer,
     InvitationListSerializer,
     NewsDetailSerializer,
+    NewsImageSerializer,
     NewsListSerializer,
     NewsUpdateSerializer,
     SensitiveKeywordManagementSerializer,
@@ -15,7 +19,13 @@ from dook.api.admin.serializers import (
 )
 from dook.api.news.filters import AdminNewsFilter
 from dook.api.users.filters import AdminUsersFilter
-from dook.core.news.models import News, SensitiveKeyword
+from dook.core.integrations.storage.client import S3ApiClient
+from dook.core.news.models import (
+    ExpertOpinion,
+    FactCheckerOpinion,
+    News,
+    SensitiveKeyword,
+)
 from dook.core.users.models import Invitation, User
 
 
@@ -104,6 +114,20 @@ class NewsDetailView(generics.RetrieveAPIView, generics.UpdateAPIView):
         )
 
 
+class ExpertOpinionDetailView(generics.UpdateAPIView):
+    http_method_names = ["put"]
+    permission_classes = (IsAdmin,)
+    serializer_class = ExpertOpinionExtendedSerializer
+    queryset = ExpertOpinion.objects.all()
+
+
+class FactCheckerOpinionDetailView(generics.UpdateAPIView):
+    http_method_names = ["put"]
+    permission_classes = (IsAdmin,)
+    serializer_class = FactCheckerOpinionExtendedSerializer
+    queryset = FactCheckerOpinion.objects.all()
+
+
 class SensitiveKeywordListView(generics.ListCreateAPIView):
     permission_classes = (IsAdmin,)
     serializer_class = SensitiveKeywordManagementSerializer
@@ -117,3 +141,20 @@ class SensitiveKeywordDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAdmin,)
     serializer_class = SensitiveKeywordManagementSerializer
     queryset = SensitiveKeyword.objects.all()
+
+
+class NewsImageView(generics.UpdateAPIView):
+    permission_classes = (IsAdmin,)
+    serializer_class = NewsImageSerializer
+    queryset = News.objects.all()
+
+    def patch(self, request, pk):
+        self.s3_client = S3ApiClient()
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        news = self.get_object()
+        news.attach_screenshot(image=serializer.validated_data["image"])
+
+        return Response(status=status.HTTP_204_NO_CONTENT,)

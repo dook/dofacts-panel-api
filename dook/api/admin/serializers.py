@@ -65,11 +65,10 @@ class JudgeSerializer(serializers.ModelSerializer):
         fields = ["id", "email", "name"]
 
 
-class FactCheckerOpinionExtendedSerializer(serializers.ModelSerializer):
+class BaseOpinionSerializer(serializers.ModelSerializer):
     judge = JudgeSerializer(many=False, read_only=True)
 
     class Meta:
-        model = FactCheckerOpinion
         fields = (
             "id",
             "title",
@@ -82,13 +81,21 @@ class FactCheckerOpinionExtendedSerializer(serializers.ModelSerializer):
             "judge",
         )
 
+    def update(self, instance, validated_data, *args, **kwargs):
+        instance.reset_fields_values(exclude_fields=set(validated_data.keys()))
+        return super().update(instance, validated_data, *args, **kwargs)
 
-class ExpertOpinionExtendedSerializer(serializers.ModelSerializer):
-    judge = JudgeSerializer(many=False, read_only=True)
 
+class FactCheckerOpinionExtendedSerializer(BaseOpinionSerializer):
+    class Meta:
+        model = FactCheckerOpinion
+        fields = BaseOpinionSerializer.Meta.fields
+
+
+class ExpertOpinionExtendedSerializer(BaseOpinionSerializer):
     class Meta:
         model = ExpertOpinion
-        fields = FactCheckerOpinionExtendedSerializer.Meta.fields
+        fields = BaseOpinionSerializer.Meta.fields
 
 
 class NewsListSerializer(serializers.ModelSerializer):
@@ -142,13 +149,19 @@ class NewsDetailSerializer(serializers.ModelSerializer):
 
 class NewsUpdateSerializer(serializers.ModelSerializer):
     deleted = serializers.BooleanField(required=True)
+    text = serializers.CharField(allow_null=False)
+    comment = serializers.CharField(allow_null=False)
 
     class Meta:
         model = News
-        fields = ("deleted",)
+        fields = ("deleted", "url", "text", "comment")
 
 
 class SensitiveKeywordManagementSerializer(serializers.ModelSerializer):
     class Meta:
         model = SensitiveKeyword
         fields = "__all__"
+
+
+class NewsImageSerializer(serializers.Serializer):
+    image = serializers.ImageField(required=True)
