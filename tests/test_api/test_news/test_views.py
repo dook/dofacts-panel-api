@@ -206,7 +206,7 @@ class TestNewsVerifiedViewSet:
         url = reverse("api:news-verified-list")
 
         user = UserFactory(role=UserRoleType.EXPERT)
-        news = NewsFactory.create_batch(2)
+        news = NewsFactory.create_batch(1)
         [UserNewsFactory(user=user, news=news) for news in news]
         [
             ExpertOpinionFactory(judge=user, news=news, verdict=VerdictType.VERIFIED_TRUE)

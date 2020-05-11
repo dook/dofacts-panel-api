@@ -9,6 +9,7 @@ Welcome to DoFacts documentation!
 
     admin
     api
+    news
 
 Indices and tables
 ==================

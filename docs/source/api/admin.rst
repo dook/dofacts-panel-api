@@ -70,6 +70,8 @@ List Fact Checkers
 
     :reqheader Authorization: token in format ``Token <token_value>``
 
+    :query string specialization: filtering by user specialization
+
     :>jsonarr int assigned: user assigned
     :>jsonarr datetime created_at: user created at
     :>jsonarr string email: user email
