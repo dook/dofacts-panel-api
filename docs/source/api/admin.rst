@@ -430,6 +430,24 @@ News Update
             "url": "www.some_updated.url"
         }
 
+News Add Screenshot
+-------------------
+
+.. http:patch:: /admin/news-image/(uuid:pk)
+
+    Updates news with given screenshot.
+
+    :reqheader Authorization: token in format ``Token <token_value>``
+
+    :<multipart bytes image: image file
+
+    :statuscode 204: success
+    :statuscode 400: invalid payload
+    :statuscode 401: not authorized
+    :statuscode 403: invalid permissions
+    :statuscode 404: does not exist
+    :statuscode 503: storage service unavailable
+
 Keywords List
 -------------
 
@@ -470,13 +488,325 @@ Keywords List
                 {
                     "id": "52bccefb-b122-4fe8-aab2-cf6061da20a7",
                     "created_at": "2020-05-11T05:04:14.943309Z",
-                    "name": "test_name",
+                    "name": "test_name"
                 },
                 {
                     "id": "12bccefb-b122-4fe8-aab2-cf6061da20a7",
                     "created_at": "2020-04-11T05:04:14.943309Z",
-                    "name": "test_name_2",
+                    "name": "test_name_2"
                 }
             ],
             "total": 2
+        }
+
+Keyword Create
+--------------
+
+.. http:post:: /admin/keywords
+
+    Creates a sensitive keyword.
+
+    :reqheader Authorization: token in format ``Token <token_value>``
+
+    :<json string name: keyword name
+
+    :>json uuid id: keyword id
+    :>json datetime created_at: keyword created datetime
+    :>json string name: keyword name
+
+    :statuscode 200: success
+    :statuscode 400: invalid payload
+    :statuscode 401: not authorized
+    :statuscode 403: invalid permissions
+
+    **Example request**:
+
+    .. http:example:: curl httpie
+
+        POST /admin/keywords HTTP/1.1
+        Content-Type: application/json
+        Authorization: Token decdb3eb3e17ea10753de3eedf73252b9f0dcdb326cf78e78d07ab2c97cd0651
+
+        {
+            "name": "test_create_name"
+        }
+
+    **Example response**:
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Allow: GET, POST, OPTIONS
+        Content-Type: application/json
+
+        {
+            "id": "52bccefb-b122-4fe8-aab2-cf6061da20a7",
+            "created_at": "2020-05-11T05:04:14.943309Z",
+            "name": "test_create_name"
+        }
+
+Keyword Detail
+--------------
+
+.. http:get:: /admin/keywords/(uuid:pk)
+
+    Fetches sensitive keyword details.
+
+    :reqheader Authorization: token in format ``Token <token_value>``
+
+    :>json uuid id: keyword id
+    :>json datetime created_at: keyword created datetime
+    :>json string name: keyword name
+
+    :statuscode 200: success
+    :statuscode 401: not authorized
+    :statuscode 403: invalid permissions
+    :statuscode 404: does not exist
+
+    **Example request**:
+
+    .. http:example:: curl httpie
+
+        GET /admin/keywords/52bccefb-b122-4fe8-aab2-cf6061da20a7 HTTP/1.1
+        Content-Type: application/json
+        Authorization: Token decdb3eb3e17ea10753de3eedf73252b9f0dcdb326cf78e78d07ab2c97cd0651
+
+    **Example response**:
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Allow: GET, PATCH, DELETE, OPTIONS
+        Content-Type: application/json
+
+        {
+            "id": "52bccefb-b122-4fe8-aab2-cf6061da20a7",
+            "created_at": "2020-05-11T05:04:14.943309Z",
+            "name": "test_name"
+        }
+
+Keyword Update
+--------------
+
+.. http:patch:: /admin/keywords/(uuid:pk)
+
+    Updates sensitive keyword details.
+
+    :reqheader Authorization: token in format ``Token <token_value>``
+
+    :<json string name: keyword name
+
+    :>json uuid id: keyword id
+    :>json datetime created_at: keyword created datetime
+    :>json string name: keyword name
+
+    :statuscode 200: success
+    :statuscode 401: not authorized
+    :statuscode 403: invalid permissions
+    :statuscode 404: does not exist
+
+    **Example request**:
+
+    .. http:example:: curl httpie
+
+        PATCH /admin/keywords/52bccefb-b122-4fe8-aab2-cf6061da20a7 HTTP/1.1
+        Content-Type: application/json
+        Authorization: Token decdb3eb3e17ea10753de3eedf73252b9f0dcdb326cf78e78d07ab2c97cd0651
+
+        {
+            "name": "test_update_name"
+        }
+
+    **Example response**:
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Allow: GET, PATCH, DELETE, OPTIONS
+        Content-Type: application/json
+
+        {
+            "id": "52bccefb-b122-4fe8-aab2-cf6061da20a7",
+            "created_at": "2020-05-11T05:04:14.943309Z",
+            "name": "test_update_name"
+        }
+
+Keyword Delete
+--------------
+
+.. http:delete:: /admin/keywords/(uuid:pk)
+
+    Deletes sensitive keyword.
+
+    :reqheader Authorization: token in format ``Token <token_value>``
+
+    :statuscode 204: success
+    :statuscode 401: not authorized
+    :statuscode 403: invalid permissions
+    :statuscode 404: does not exist
+
+    **Example request**:
+
+    .. http:example:: curl httpie
+
+        DELETE /admin/keywords/52bccefb-b122-4fe8-aab2-cf6061da20a7 HTTP/1.1
+        Content-Type: application/json
+        Authorization: Token decdb3eb3e17ea10753de3eedf73252b9f0dcdb326cf78e78d07ab2c97cd0651
+
+    **Example response**:
+
+    .. sourcecode:: http
+
+        HTTP/1.1 204 No Content
+        Allow: GET, PATCH, DELETE, OPTIONS
+        Content-Type: application/json
+
+Expert Opinion Update
+---------------------
+
+.. http:put:: /admin/expert-opinion/(int:pk)
+
+    Updates expert opinion.
+
+    :reqheader Authorization: token in format ``Token <token_value>``
+
+    :<json boolean about_corona_virus: is news about corona virus
+    :<json string comment: comment
+    :<json string confirmation_sources: confirmation sources
+    :<json string duplicate_reference: news duplicate reference
+    :<json boolean is_duplicate: is new duplicated
+    :<json string title: title
+    :<json string verdict: verdict
+
+    :>json boolean about_corona_virus: is news about corona virus
+    :>json string comment: comment
+    :>json string confirmation_sources: confirmation sources
+    :>json string duplicate_reference: news duplicate reference
+    :>json int id: opinion id
+    :>json boolean is_duplicate: is new duplicated
+    :>json object judge: author of opinion
+    :>json string title: title
+    :>json string verdict: verdict
+
+    :statuscode 200: success
+    :statuscode 400: invalid payload
+    :statuscode 401: not authorized
+    :statuscode 403: invalid permissions
+    :statuscode 404: does not exist
+
+    **Example request**:
+
+    .. http:example:: curl httpie
+
+        PUT /admin/expert-opinion/1 HTTP/1.1
+        Content-Type: application/json
+        Authorization: Token decdb3eb3e17ea10753de3eedf73252b9f0dcdb326cf78e78d07ab2c97cd0651
+
+        {
+            "about_corona_virus": true,
+            "comment": "Thinking through all the facts and other dependencies, yes.",
+            "confirmation_sources": "drop.com",
+            "duplicate_reference": null,
+            "is_duplicate": false,
+            "title": "Some random title",
+            "verdict": true
+        }
+
+    **Example response**:
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Allow: PUT, OPTIONS
+        Content-Type: application/json
+
+        {
+            "about_corona_virus": true,
+            "comment": "Thinking through all the facts and other dependencies, yes.",
+            "confirmation_sources": "drop.com",
+            "duplicate_reference": null,
+            "id": 1,
+            "is_duplicate": false,
+            "judge": {
+                "id": "9c79bfe1-6b15-4ccf-b4f0-266c631fa480",
+                "email": "test@email.com",
+                "name": "judge_name"
+            },
+            "title": "Some random title",
+            "verdict": true
+        }
+
+Fact Checker Opinion Update
+---------------------------
+
+.. http:put:: /admin/fact-checker-opinion/(int:pk)
+
+    Updates fact checker opinion.
+
+    :reqheader Authorization: token in format ``Token <token_value>``
+
+    :<json boolean about_corona_virus: is news about corona virus
+    :<json string comment: comment
+    :<json string confirmation_sources: confirmation sources
+    :<json string duplicate_reference: news duplicate reference
+    :<json boolean is_duplicate: is new duplicated
+    :<json string title: title
+    :<json string verdict: verdict
+
+    :>json boolean about_corona_virus: is news about corona virus
+    :>json string comment: comment
+    :>json string confirmation_sources: confirmation sources
+    :>json string duplicate_reference: news duplicate reference
+    :>json int id: opinion id
+    :>json boolean is_duplicate: is new duplicated
+    :>json object judge: author of opinion
+    :>json string title: title
+    :>json string verdict: verdict
+
+    :statuscode 200: success
+    :statuscode 400: invalid payload
+    :statuscode 401: not authorized
+    :statuscode 403: invalid permissions
+    :statuscode 404: does not exist
+
+    **Example request**:
+
+    .. http:example:: curl httpie
+
+        PUT /admin/fact-checker-opinion/1 HTTP/1.1
+        Content-Type: application/json
+        Authorization: Token decdb3eb3e17ea10753de3eedf73252b9f0dcdb326cf78e78d07ab2c97cd0651
+
+        {
+            "about_corona_virus": true,
+            "comment": "Thinking through all the facts and other dependencies, yes.",
+            "confirmation_sources": "drop.com",
+            "duplicate_reference": null,
+            "is_duplicate": false,
+            "title": "Some random title",
+            "verdict": true
+        }
+
+    **Example response**:
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Allow: PUT, OPTIONS
+        Content-Type: application/json
+
+        {
+            "about_corona_virus": true,
+            "comment": "Thinking through all the facts and other dependencies, yes.",
+            "confirmation_sources": "drop.com",
+            "duplicate_reference": null,
+            "id": 1,
+            "is_duplicate": false,
+            "judge": {
+                "id": "9c79bfe1-6b15-4ccf-b4f0-266c631fa480",
+                "email": "test@email.com",
+                "name": "judge_name"
+            },
+            "title": "Some random title",
+            "verdict": true
         }
