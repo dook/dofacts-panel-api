@@ -66,7 +66,7 @@ Login
 
     :statuscode 200: success
     :statuscode 400: invalid credentials
-    :statuscode 403: user not verified
+    :statuscode 401: user not verified
 
     **Example request**:
 
@@ -110,7 +110,7 @@ Send Invite
 
     :statuscode 201: success
     :statuscode 400: invitation with given email already exists
-    :statuscode 403: not authorized
+    :statuscode 401: not authorized
     :statuscode 503: internal email service error
 
     **Example request**:
@@ -143,7 +143,7 @@ Send Invite
 Current User
 ------------
 
-.. http:post:: /users/current-user
+.. http:get:: /users/current-user
 
     Fetches requesting user details.
 
@@ -154,7 +154,7 @@ Current User
     :>json string user_role: user role
 
     :statuscode 200: success
-    :statuscode 403: not authorized
+    :statuscode 401: not authorized
 
     **Example request**:
 
@@ -186,7 +186,7 @@ Password Reset Request
 
     Sends password reset credentials to requesting user email address.
 
-    :>json string email: user email
+    :<json string email: user email
 
     :statuscode 200: success
     :statuscode 503: internal email service error
@@ -222,8 +222,8 @@ Password Reset
 
     Resets user password given password reset credentials.
 
-    :>json string password: new password
-    :>json string password2: new password
+    :<json string password: new password
+    :<json string password2: new password
 
     :statuscode 200: success
     :statuscode 400: user does not exist, invalid token
@@ -261,13 +261,13 @@ Internal Password Reset
 
     :reqheader Authorization: token in format ``Token <token_value>``
 
-    :>json string old_password: old password
-    :>json string password: new password
-    :>json string password2: new password
+    :<json string old_password: old password
+    :<json string password: new password
+    :<json string password2: new password
 
     :statuscode 200: success
     :statuscode 400: password too weak
-    :statuscode 403: not authorized
+    :statuscode 401: not authorized
 
     **Example request**:
 

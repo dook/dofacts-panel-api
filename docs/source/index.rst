@@ -7,6 +7,7 @@ Welcome to DoFacts documentation!
     :caption: Table of Contents:
     :name: mastertoc
 
+    admin
     api
 
 Indices and tables

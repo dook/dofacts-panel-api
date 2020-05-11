@@ -151,6 +151,7 @@ class NewsUpdateSerializer(serializers.ModelSerializer):
     deleted = serializers.BooleanField(required=True)
     text = serializers.CharField(allow_null=False)
     comment = serializers.CharField(allow_null=False)
+    url = serializers.CharField(required=False)
 
     class Meta:
         model = News
