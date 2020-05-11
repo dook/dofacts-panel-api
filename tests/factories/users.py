@@ -1,8 +1,9 @@
-import factory
-from django.utils import timezone
+from datetime import date
 
-from dook.users.constants import UserRoleType
-from dook.users.models import Invitation, User, UserNews
+import factory
+
+from dook.core.users.constants import UserRoleType
+from dook.core.users.models import Invitation, User, UserNews
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -17,7 +18,7 @@ class InvitationFactory(factory.DjangoModelFactory):
     class Meta:
         model = Invitation
 
-    sent_at = factory.LazyFunction(timezone.now)
+    sent_at = factory.LazyFunction(date.today)
     token = factory.LazyFunction(Invitation.next_token)
     email = factory.Faker("email")
 

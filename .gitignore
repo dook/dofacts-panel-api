@@ -2,6 +2,7 @@
 .idea/
 .cache/
 .pytest_cache/
+__pycache__/
 scripts/
 public/
 env/
