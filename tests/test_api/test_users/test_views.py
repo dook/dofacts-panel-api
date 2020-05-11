@@ -1,4 +1,3 @@
-from datetime import date
 from unittest import mock
 from uuid import uuid4
 
@@ -8,14 +7,12 @@ from django.conf import settings
 from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from freezegun import freeze_time
 from rest_framework import status
 
 from dook.api.users.exceptions import (
     InternalEmailErrorException,
     InvalidInviteTokenException,
-    TokenAlreadyUsedException,
-    TokenExpiredException,
+    TokenAlreadyUsedException
 )
 from dook.core.users.constants import (
     InvitationStatusType,
